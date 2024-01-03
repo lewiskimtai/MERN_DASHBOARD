@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3500" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "https://analytics-dasboard.onrender.com" }),
   reducerPath: "analytics",
   tagTypes: ["Accountsopened", "Home"],
   endpoints: (build) => ({
