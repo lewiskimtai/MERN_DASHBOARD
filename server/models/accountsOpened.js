@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const accountsopenedSchema = new mongoose.Schema(
   {
+    year: Number,
     totalAccounts: Number,
     gender: {
       male: Number,
@@ -12,7 +13,7 @@ const accountsopenedSchema = new mongoose.Schema(
         type: {
           type: String,
         },
-        sumofAccounts: {
+        totalAccounts: {
           type: Number,
         },
       },
@@ -22,7 +23,7 @@ const accountsopenedSchema = new mongoose.Schema(
         region: {
           type: String,
         },
-        sumofAccounts: {
+        totalAccounts: {
           type: Number,
         },
       },
@@ -31,56 +32,108 @@ const accountsopenedSchema = new mongoose.Schema(
       {
         month: String,
         totalAccounts: Number,
-        male: Number,
-        female: Number,
-        mamasSafeIndividualSavingsAccount: Number,
-        noFeeJointSavingsAccount: Number,
-        noFeeSavingsIndividualAccount: Number,
-        trustHalalPersonalAccount: Number,
-        trustSaversAccount: Number,
-        centralA: Number,
-        centralB: Number,
-        farEast: Number,
-        western: Number,
-        aruaBranch: Number,
-        busiaBranch: Number,
-        kalerweBranch: Number,
-        kamwengeBranch: Number,
-        kapchorwaBranch: Number,
-        katweBranch: Number,
-        kumiBranch: Number,
-        masakaBranch: Number,
-        mbararaBranch: Number,
-        mukonoBranch: Number,
-        nakivuboBranch: Number,
+        gender: {
+          male: Number,
+          female: Number,
+        },
+        regions: [
+          {
+            region: {
+              type: String,
+            },
+            totalAccounts: {
+              type: Number,
+            },
+            gender: {
+              male: Number,
+              female: Number,
+            },
+            typesofAccounts: [
+              {
+                type: {
+                  type: String,
+                },
+                totalAccounts: {
+                  type: Number,
+                },
+              },
+            ],
+            branches: [
+              {
+                branch: String,
+                totalAccounts: Number,
+                gender: {
+                  male: Number,
+                  female: Number,
+                },
+                typesofAccounts: [
+                  {
+                    type: {
+                      type: String,
+                    },
+                    totalAccounts: {
+                      type: Number,
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       },
     ],
     dailyData: [
       {
         date: String,
         totalAccounts: Number,
-        male: Number,
-        female: Number,
-        mamasSafeIndividualSavingsAccount: Number,
-        noFeeJointSavingsAccount: Number,
-        noFeeSavingsIndividualAccount: Number,
-        trustHalalPersonalAccount: Number,
-        trustSaversAccount: Number,
-        centralA: Number,
-        centralB: Number,
-        farEast: Number,
-        western: Number,
-        aruaBranch: Number,
-        busiaBranch: Number,
-        kalerweBranch: Number,
-        kamwengeBranch: Number,
-        kapchorwaBranch: Number,
-        katweBranch: Number,
-        kumiBranch: Number,
-        masakaBranch: Number,
-        mbararaBranch: Number,
-        mukonoBranch: Number,
-        nakivuboBranch: Number,
+        gender: {
+          male: Number,
+          female: Number,
+        },
+        regions: [
+          {
+            region: {
+              type: String,
+            },
+            totalAccounts: {
+              type: Number,
+            },
+            gender: {
+              male: Number,
+              female: Number,
+            },
+            typesofAccounts: [
+              {
+                type: {
+                  type: String,
+                },
+                totalAccounts: {
+                  type: Number,
+                },
+              },
+            ],
+            branches: [
+              {
+                branch: String,
+                totalAccounts: Number,
+                gender: {
+                  male: Number,
+                  female: Number,
+                },
+                typesofAccounts: [
+                  {
+                    type: {
+                      type: String,
+                    },
+                    totalAccounts: {
+                      type: Number,
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       },
     ],
   },

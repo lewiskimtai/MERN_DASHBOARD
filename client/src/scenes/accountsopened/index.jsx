@@ -19,6 +19,7 @@ const AccountsOpened = () => {
 
   const { data, isLoading } = useGetAccountsopenedQuery();
 
+
   const typeofaccountscolumns = [
     {
       field: "type",

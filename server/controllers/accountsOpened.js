@@ -4,7 +4,7 @@ import asyncHandler from "express-async-handler";
 export const getAccountsOpened = asyncHandler(async (req, res) => {
   // hardcoded values
   const currentMonth = "January";
-  const currentDay = "2021 - 01 - 01";
+  const currentDay = "2021-01-01";
 
   // Get number of accounts opened from MongoDB
   const accountsOpened = await Accountsopened.find().lean();
