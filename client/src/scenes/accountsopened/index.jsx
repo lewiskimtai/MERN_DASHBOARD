@@ -30,11 +30,7 @@ const AccountsOpened = () => {
   const [selectedIndex, setSelectedIndex] = useState(1);
 
   const { data, isLoading } = useGetAccountsopenedQuery();
-
-<<<<<<< HEAD
-
-=======
->>>>>>> 870f713a8ec1c3404e7d781539667277da5759a3
+  
   const typeofaccountscolumns = [
     {
       field: "type",
