@@ -32,6 +32,7 @@ const AccountsOpened = () => {
   const { data, isLoading } = useGetAccountsopenedQuery();
 
   console.log("REGIONS", data);
+  console.log("REGIONS", data);
 
   const typeofaccountscolumns = [
     {
