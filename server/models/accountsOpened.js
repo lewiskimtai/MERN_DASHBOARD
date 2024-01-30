@@ -26,6 +26,40 @@ const accountsopenedSchema = new mongoose.Schema(
         totalAccounts: {
           type: Number,
         },
+        gender: {
+          male: Number,
+          female: Number,
+        },
+        typesofAccounts: [
+          {
+            type: {
+              type: String,
+            },
+            totalAccounts: {
+              type: Number,
+            },
+          },
+        ],
+        branches: [
+          {
+            branch: String,
+            totalAccounts: Number,
+            gender: {
+              male: Number,
+              female: Number,
+            },
+            typesofAccounts: [
+              {
+                type: {
+                  type: String,
+                },
+                totalAccounts: {
+                  type: Number,
+                },
+              },
+            ],
+          },
+        ],
       },
     ],
     monthlyData: [

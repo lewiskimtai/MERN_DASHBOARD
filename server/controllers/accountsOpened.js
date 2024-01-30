@@ -4,7 +4,7 @@ import asyncHandler from "express-async-handler";
 export const getAccountsOpened = asyncHandler(async (req, res) => {
   // hardcoded values
   const currentMonth = "January";
-  const currentDay = "2021-01-01";
+  const currentDay = "2021-01-02";
 
   // Get number of accounts opened from MongoDB
   const accountsOpened = await Accountsopened.find().lean();
@@ -14,7 +14,8 @@ export const getAccountsOpened = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "No accounts found" });
   }
 
-  const { totalAccounts, typesofAccounts, regions, monthlyData, gender } = accountsOpened[0];
+  const { year, totalAccounts, typesofAccounts, regions, monthlyData, gender } =
+    accountsOpened[0];
 
   const thisMonthStats = accountsOpened[0].monthlyData.find(({ month }) => {
     return month === currentMonth;
@@ -25,6 +26,7 @@ export const getAccountsOpened = asyncHandler(async (req, res) => {
   });
 
   res.status(200).json({
+    year,
     totalAccounts,
     typesofAccounts,
     regions,
