@@ -20,7 +20,8 @@ import LineChart from "../../componets/LineChart";
 import PieChart from "../../componets/PieChart";
 import { ResponsivePie } from "@nivo/pie";
 import { DataGrid } from "@mui/x-data-grid";
-import { Email, ArrowDropDown } from "@mui/icons-material";
+import { ArrowDropDown } from "@mui/icons-material";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { useGetAccountsopenedQuery } from "../../state/api";
 
 import { ResponsiveLine } from "@nivo/line";
@@ -515,7 +516,7 @@ const branchTypesOfAccounts = data
               increase="+14%"
               description="Total Accounts Opened"
               icon={
-                <Email
+                <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
               }
@@ -526,7 +527,7 @@ const branchTypesOfAccounts = data
               increase="+14%"
               description="This Year"
               icon={
-                <Email
+                <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
               }
@@ -546,7 +547,7 @@ const branchTypesOfAccounts = data
               increase="+14%"
               description="This Month"
               icon={
-                <Email
+                <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
               }
@@ -557,7 +558,7 @@ const branchTypesOfAccounts = data
               increase="+14%"
               description="Todate"
               icon={
-                <Email
+                <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
               }
@@ -702,7 +703,7 @@ const branchTypesOfAccounts = data
               increase="+14%"
               description="Total Accounts Opened"
               icon={
-                <Email
+                <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
               }
@@ -713,7 +714,7 @@ const branchTypesOfAccounts = data
               increase="+14%"
               description="This Year"
               icon={
-                <Email
+                <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
               }
@@ -733,7 +734,7 @@ const branchTypesOfAccounts = data
               increase="+14%"
               description="This Month"
               icon={
-                <Email
+                <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
               }
@@ -744,7 +745,7 @@ const branchTypesOfAccounts = data
               increase="+14%"
               description="Todate"
               icon={
-                <Email
+                <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
               }
@@ -1074,7 +1075,7 @@ const branchTypesOfAccounts = data
               increase="+14%"
               description="Total Accounts Opened"
               icon={
-                <Email
+                <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
               }
@@ -1085,7 +1086,7 @@ const branchTypesOfAccounts = data
               increase="+14%"
               description="This Year"
               icon={
-                <Email
+                <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
               }
@@ -1105,7 +1106,7 @@ const branchTypesOfAccounts = data
               increase="+14%"
               description="This Month"
               icon={
-                <Email
+                <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
               }
@@ -1116,7 +1117,7 @@ const branchTypesOfAccounts = data
               increase="+14%"
               description="Todate"
               icon={
-                <Email
+                <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
               }
@@ -1361,7 +1362,7 @@ const branchTypesOfAccounts = data
           <DataGrid
             loading={isLoading || !data}
             getRowId={(row) => row._id}
-            rows={(branchTypesOfAccounts) || []}
+            rows={branchTypesOfAccounts || []}
             columns={typeofaccountscolumns}
             rowHeight={25}
             headerHeight={25}
