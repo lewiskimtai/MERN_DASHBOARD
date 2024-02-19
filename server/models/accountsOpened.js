@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 const accountsopenedSchema = new mongoose.Schema(
   {
-    year: Number,
     totalAccounts: Number,
     gender: {
       male: Number,
@@ -56,6 +55,32 @@ const accountsopenedSchema = new mongoose.Schema(
                 totalAccounts: {
                   type: Number,
                 },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    yearlyData: [
+      {
+        year: {
+          type: Number,
+        },
+        totalAccounts: {
+          type: Number,
+        },
+        regions: [
+          {
+            region: {
+              type: String,
+            },
+            totalAccounts: {
+              type: Number,
+            },
+            branches: [
+              {
+                branch: String,
+                totalAccounts: Number,
               },
             ],
           },

@@ -23,6 +23,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { ArrowDropDown } from "@mui/icons-material";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { useGetAccountsopenedQuery } from "../../state/api";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
 import { ResponsiveLine } from "@nivo/line";
 
@@ -219,6 +221,7 @@ const AccountsOpened = () => {
   };
 
   const { data, isLoading } = useGetAccountsopenedQuery();
+  console.log("DATA", data)
 
   const typeofaccountscolumns = [
     {
@@ -293,8 +296,116 @@ const AccountsOpened = () => {
       )
     : [];
 
+    // This Year's Total Accounts opened for the selected region
+  const thisYearRegionAccounts = data
+    ? [data].flatMap((item) =>
+        [item.thisYearStats]
+          .filter((thisYearItem) =>
+            thisYearItem.regions.some(
+              (region) =>
+                (!selectedRegion || region.region === selectedRegion) &&
+                (!selectedBranch ||
+                  region.branches.some(
+                    (branch) => branch.branch === selectedBranch
+                  ))
+            )
+          )
+          .map((filteredItem) => ({
+            year: filteredItem.year,
+            value: filteredItem.regions.find(
+              (region) => region.region === selectedRegion
+            ).totalAccounts,
+            branchvalue: filteredItem.regions
+              .find((region) => region.region === selectedRegion)
+              .branches.find((branch) => branch.branch === selectedBranch)
+              .totalAccounts,
+          }))
+      )
+    : [];
+  
+  // Previous Year's Total Accounts opened for the selected region
+  const prevYearRegionAccounts = data
+    ? [data].flatMap((item) =>
+        [item.previousYearStats]
+          .filter((prevYearItem) =>
+            prevYearItem.regions.some(
+              (region) =>
+                (!selectedRegion || region.region === selectedRegion) &&
+                (!selectedBranch ||
+                  region.branches.some(
+                    (branch) => branch.branch === selectedBranch
+                  ))
+            )
+          )
+          .map((filteredItem) => ({
+            year: filteredItem.year,
+            value: filteredItem.regions.find(
+              (region) => region.region === selectedRegion
+            ).totalAccounts,
+            branchvalue: filteredItem.regions
+              .find((region) => region.region === selectedRegion)
+              .branches.find((branch) => branch.branch === selectedBranch)
+              .totalAccounts,
+          }))
+      )
+    : [];
+
+  // Previous Months Total Accounts opened for the selected region
+  const prevMonthRegionAccounts = data
+    ? [data].flatMap((item) =>
+        [item.thisMonthStats]
+          .filter((thisMonthItem) =>
+            thisMonthItem.regions.some(
+              (region) =>
+                (!selectedRegion || region.region === selectedRegion) &&
+                (!selectedBranch ||
+                  region.branches.some(
+                    (branch) => branch.branch === selectedBranch
+                  ))
+            )
+          )
+          .map((filteredItem) => ({
+            month: filteredItem.month,
+            value: filteredItem.regions.find(
+              (region) => region.region === selectedRegion
+            ).totalAccounts,
+            branchvalue: filteredItem.regions
+            .find((region) => region.region === selectedRegion)
+            .branches.find((branch) => branch.branch === selectedBranch)
+            .totalAccounts,
+          }))
+      )
+    : [];
+
   // Today's Total Accounts opened for selected region
   const todayRegionAccounts = data
+    ? [data].flatMap((item) =>
+        [item.todayStats]
+          .filter((todayItem) =>
+            todayItem.regions.some(
+              (region) =>
+                (!selectedRegion || region.region === selectedRegion) &&
+                (!selectedBranch ||
+                  region.branches.some(
+                    (branch) => branch.branch === selectedBranch
+                  ))
+            )
+          )
+          .map((filteredItem) => ({
+            month: filteredItem.month,
+            value: filteredItem.regions.find(
+              (region) => region.region === selectedRegion
+            ).totalAccounts,
+            branchvalue: filteredItem.regions
+              .find((region) => region.region === selectedRegion)
+              .branches.find((branch) => branch.branch === selectedBranch)
+              .totalAccounts,
+          }))
+      )
+    : [];
+
+  // Previous Day's Total Accounts opened for selected region
+  const prevDayRegionAccounts = data
     ? [data].flatMap((item) =>
         [item.todayStats]
           .filter((todayItem) =>
@@ -513,7 +624,7 @@ const branchTypesOfAccounts = data
             <StatBox
               title="Total Accounts"
               value={data && data.totalAccounts}
-              increase="+14%"
+              
               description="Total Accounts Opened"
               icon={
                 <AccountBalanceWalletIcon
@@ -523,13 +634,65 @@ const branchTypesOfAccounts = data
             />
             <StatBox
               title="Total Accounts"
-              value="50"
-              increase="+14%"
+              value={data?.thisYearStats?.totalAccounts}
+              increase={
+                <span
+                  style={{
+                    color:
+                      data?.thisYearStats?.totalAccounts -
+                        data?.previousYearStats?.totalAccounts >=
+                      0
+                        ? theme.palette.secondary[999]
+                        : theme.palette.secondary[888],
+                  }}
+                >
+                  {((data?.thisYearStats?.totalAccounts -
+                    data?.previousYearStats?.totalAccounts) /
+                    data?.previousYearStats?.totalAccounts) *
+                    100}
+                  %
+                </span>
+              }
               description="This Year"
               icon={
                 <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
+              }
+              increasee={
+                <span
+                  style={{
+                    color:
+                      data?.thisYearStats?.totalAccounts -
+                        data?.previousYearStats?.totalAccounts >=
+                      0
+                        ? theme.palette.secondary[999]
+                        : theme.palette.secondary[888],
+                  }}
+                >
+                  {data?.thisYearStats?.totalAccounts -
+                    data?.previousYearStats?.totalAccounts}
+                </span>
+              }
+              descriptionn={data?.thisYearStats?.year}
+              iconn={
+                data?.thisYearStats?.totalAccounts -
+                  data?.previousYearStats?.totalAccounts >=
+                0 ? (
+                  <ArrowDropUpIcon
+                    style={{
+                      color: theme.palette.secondary[999],
+                      fontSize: "30px",
+                    }}
+                  />
+                ) : (
+                  <ArrowDropDownIcon
+                    style={{
+                      color: theme.palette.secondary[888],
+                      fontSize: "30px",
+                    }}
+                  />
+                )
               }
             />
           </Box>
@@ -544,23 +707,127 @@ const branchTypesOfAccounts = data
             <StatBox
               title="Total Accounts"
               value={data && data.thisMonthStats.totalAccounts}
-              increase="+14%"
+              increase={
+                <span
+                  style={{
+                    color:
+                      data?.thisMonthStats?.totalAccounts -
+                        data?.previousMonthStats?.totalAccounts >=
+                      0
+                        ? theme.palette.secondary[999]
+                        : theme.palette.secondary[888],
+                  }}
+                >
+                  {((data?.thisMonthStats?.totalAccounts -
+                    data?.previousMonthStats?.totalAccounts) /
+                    data?.previousMonthStats?.totalAccounts) *
+                    100}
+                  %
+                </span>
+              }
               description="This Month"
               icon={
                 <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
               }
+              increasee={
+                <span
+                  style={{
+                    color:
+                      data?.thisMonthStats?.totalAccounts -
+                        data?.previousMonthStats?.totalAccounts >=
+                      0
+                        ? theme.palette.secondary[999]
+                        : theme.palette.secondary[888],
+                  }}
+                >
+                  {data?.thisMonthStats?.totalAccounts -
+                    data?.previousMonthStats?.totalAccounts}
+                </span>
+              }
+              descriptionn={data?.thisMonthStats?.month}
+              iconn={
+                data?.thisMonthStats?.totalAccounts -
+                  data?.previousMonthStats?.totalAccounts >=
+                0 ? (
+                  <ArrowDropUpIcon
+                    style={{
+                      color: theme.palette.secondary[999],
+                      fontSize: "30px",
+                    }}
+                  />
+                ) : (
+                  <ArrowDropDownIcon
+                    style={{
+                      color: theme.palette.secondary[888],
+                      fontSize: "30px",
+                    }}
+                  />
+                )
+              }
             />
             <StatBox
               title="Total Accounts"
               value={data && data.todayStats.totalAccounts}
-              increase="+14%"
+              increase={
+                <span
+                  style={{
+                    color:
+                      data?.todayStats?.totalAccounts -
+                        data?.previousDateStats?.totalAccounts >=
+                      0
+                        ? theme.palette.secondary[999]
+                        : theme.palette.secondary[888],
+                  }}
+                >
+                  {((data?.todayStats?.totalAccounts -
+                    data?.previousDateStats?.totalAccounts) /
+                    data?.previousDateStats?.totalAccounts) *
+                    100}
+                  %
+                </span>
+              }
               description="Todate"
               icon={
                 <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
+              }
+              increasee={
+                <span
+                  style={{
+                    color:
+                      data?.todayStats?.totalAccounts -
+                        data?.previousDateStats?.totalAccounts >=
+                      0
+                        ? theme.palette.secondary[999]
+                        : theme.palette.secondary[888],
+                  }}
+                >
+                  {data?.todayStats?.totalAccounts -
+                    data?.previousDateStats?.totalAccounts}
+                </span>
+              }
+              descriptionn={data?.todayStats?.date}
+              iconn={
+                data?.todayStats?.totalAccounts -
+                  data?.previousDateStats?.totalAccounts >=
+                0 ? (
+                  <ArrowDropUpIcon
+                    style={{
+                      color: theme.palette.secondary[999],
+                      fontSize: "30px",
+                    }}
+                  />
+                ) : (
+                  <ArrowDropDownIcon
+                    style={{
+                      color: theme.palette.secondary[888],
+                      fontSize: "30px",
+                    }}
+                  />
+                )
               }
             />
           </Box>
@@ -700,7 +967,7 @@ const branchTypesOfAccounts = data
             <StatBox
               title="Total Accounts"
               value={regionAccounts.map(({ totalAccounts }) => totalAccounts)}
-              increase="+14%"
+              
               description="Total Accounts Opened"
               icon={
                 <AccountBalanceWalletIcon
@@ -710,13 +977,65 @@ const branchTypesOfAccounts = data
             />
             <StatBox
               title="Total Accounts"
-              value="50"
-              increase="+14%"
+              value={thisYearRegionAccounts.map((item) => item.value)}
+              increase={
+                <span
+                  style={{
+                    color:
+                      thisYearRegionAccounts.map((item) => item.value) -
+                        prevYearRegionAccounts.map((item) => item.value) >=
+                      0
+                        ? theme.palette.secondary[999]
+                        : theme.palette.secondary[888],
+                  }}
+                >
+                  {((thisYearRegionAccounts.map((item) => item.value) -
+                    prevYearRegionAccounts.map((item) => item.value)) /
+                    prevYearRegionAccounts.map((item) => item.value)) *
+                    100}
+                  %
+                </span>
+              }
               description="This Year"
               icon={
                 <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
+              }
+              increasee={
+                <span
+                  style={{
+                    color:
+                      thisYearRegionAccounts.map((item) => item.value) -
+                        prevYearRegionAccounts.map((item) => item.value) >=
+                      0
+                        ? theme.palette.secondary[999]
+                        : theme.palette.secondary[888],
+                  }}
+                >
+                  {thisYearRegionAccounts.map((item) => item.value) -
+                    prevYearRegionAccounts.map((item) => item.value)}
+                </span>
+              }
+              descriptionn={data?.thisYearStats?.year}
+              iconn={
+                thisYearRegionAccounts.map((item) => item.value) -
+                  prevYearRegionAccounts.map((item) => item.value) >=
+                0 ? (
+                  <ArrowDropUpIcon
+                    style={{
+                      color: theme.palette.secondary[999],
+                      fontSize: "30px",
+                    }}
+                  />
+                ) : (
+                  <ArrowDropDownIcon
+                    style={{
+                      color: theme.palette.secondary[888],
+                      fontSize: "30px",
+                    }}
+                  />
+                )
               }
             />
           </Box>
@@ -731,23 +1050,127 @@ const branchTypesOfAccounts = data
             <StatBox
               title="Total Accounts"
               value={thisMonthRegionAccounts.map((item) => item.value)}
-              increase="+14%"
+              increase={
+                <span
+                  style={{
+                    color:
+                      thisMonthRegionAccounts.map((item) => item.value) -
+                        prevMonthRegionAccounts.map((item) => item.value) >=
+                      0
+                        ? theme.palette.secondary[999]
+                        : theme.palette.secondary[888],
+                  }}
+                >
+                  {((thisMonthRegionAccounts.map((item) => item.value) -
+                    prevMonthRegionAccounts.map((item) => item.value)) /
+                    prevMonthRegionAccounts.map((item) => item.value)) *
+                    100}
+                  %
+                </span>
+              }
               description="This Month"
               icon={
                 <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
               }
+              increasee={
+                <span
+                  style={{
+                    color:
+                      thisMonthRegionAccounts.map((item) => item.value) -
+                        prevMonthRegionAccounts.map((item) => item.value) >=
+                      0
+                        ? theme.palette.secondary[999]
+                        : theme.palette.secondary[888],
+                  }}
+                >
+                  {thisMonthRegionAccounts.map((item) => item.value) -
+                    prevMonthRegionAccounts.map((item) => item.value)}
+                </span>
+              }
+              descriptionn={data?.thisMonthStats?.month}
+              iconn={
+                thisMonthRegionAccounts.map((item) => item.value) -
+                  prevMonthRegionAccounts.map((item) => item.value) >=
+                0 ? (
+                  <ArrowDropUpIcon
+                    style={{
+                      color: theme.palette.secondary[999],
+                      fontSize: "30px",
+                    }}
+                  />
+                ) : (
+                  <ArrowDropDownIcon
+                    style={{
+                      color: theme.palette.secondary[888],
+                      fontSize: "30px",
+                    }}
+                  />
+                )
+              }
             />
             <StatBox
               title="Total Accounts"
               value={todayRegionAccounts.map((item) => item.value)}
-              increase="+14%"
+              increase={
+                <span
+                  style={{
+                    color:
+                      todayRegionAccounts.map((item) => item.value) -
+                        prevDayRegionAccounts.map((item) => item.value) >=
+                      0
+                        ? theme.palette.secondary[999]
+                        : theme.palette.secondary[888],
+                  }}
+                >
+                  {((todayRegionAccounts.map((item) => item.value) -
+                    prevDayRegionAccounts.map((item) => item.value)) /
+                    prevDayRegionAccounts.map((item) => item.value)) *
+                    100}
+                  %
+                </span>
+              }
               description="Todate"
               icon={
                 <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
+              }
+              increasee={
+                <span
+                  style={{
+                    color:
+                      todayRegionAccounts.map((item) => item.value) -
+                        prevDayRegionAccounts.map((item) => item.value) >=
+                      0
+                        ? theme.palette.secondary[999]
+                        : theme.palette.secondary[888],
+                  }}
+                >
+                  {todayRegionAccounts.map((item) => item.value) -
+                    prevDayRegionAccounts.map((item) => item.value)}
+                </span>
+              }
+              descriptionn={data?.todayStats?.date}
+              iconn={
+                todayRegionAccounts.map((item) => item.value) -
+                  prevDayRegionAccounts.map((item) => item.value) >=
+                0 ? (
+                  <ArrowDropUpIcon
+                    style={{
+                      color: theme.palette.secondary[999],
+                      fontSize: "30px",
+                    }}
+                  />
+                ) : (
+                  <ArrowDropDownIcon
+                    style={{
+                      color: theme.palette.secondary[888],
+                      fontSize: "30px",
+                    }}
+                  />
+                )
               }
             />
           </Box>
@@ -1072,7 +1495,7 @@ const branchTypesOfAccounts = data
             <StatBox
               title="Total Accounts"
               value={branchAccounts.map((item) => item.totalAccounts)}
-              increase="+14%"
+              
               description="Total Accounts Opened"
               icon={
                 <AccountBalanceWalletIcon
@@ -1082,13 +1505,65 @@ const branchTypesOfAccounts = data
             />
             <StatBox
               title="Total Accounts"
-              value="50"
-              increase="+14%"
+              value={thisYearRegionAccounts.map((item) => item.branchvalue)}
+              increase={
+                <span
+                  style={{
+                    color:
+                      thisYearRegionAccounts.map((item) => item.branchvalue) -
+                        prevYearRegionAccounts.map((item) => item.branchvalue) >=
+                      0
+                        ? theme.palette.secondary[999]
+                        : theme.palette.secondary[888],
+                  }}
+                >
+                  {((thisYearRegionAccounts.map((item) => item.branchvalue) -
+                    prevYearRegionAccounts.map((item) => item.branchvalue)) /
+                    prevYearRegionAccounts.map((item) => item.branchvalue)) *
+                    100}
+                  %
+                </span>
+              }
               description="This Year"
               icon={
                 <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
+              }
+              increasee={
+                <span
+                  style={{
+                    color:
+                      thisYearRegionAccounts.map((item) => item.branchvalue) -
+                        prevYearRegionAccounts.map((item) => item.branchvalue) >=
+                      0
+                        ? theme.palette.secondary[999]
+                        : theme.palette.secondary[888],
+                  }}
+                >
+                  {thisYearRegionAccounts.map((item) => item.branchvalue) -
+                    prevYearRegionAccounts.map((item) => item.branchvalue)}
+                </span>
+              }
+              descriptionn={data?.thisYearStats?.year}
+              iconn={
+                thisYearRegionAccounts.map((item) => item.branchvalue) -
+                  prevYearRegionAccounts.map((item) => item.branchvalue) >=
+                0 ? (
+                  <ArrowDropUpIcon
+                    style={{
+                      color: theme.palette.secondary[999],
+                      fontSize: "30px",
+                    }}
+                  />
+                ) : (
+                  <ArrowDropDownIcon
+                    style={{
+                      color: theme.palette.secondary[888],
+                      fontSize: "30px",
+                    }}
+                  />
+                )
               }
             />
           </Box>
@@ -1102,24 +1577,132 @@ const branchTypesOfAccounts = data
           >
             <StatBox
               title="Total Accounts"
-              value={todayRegionAccounts.map((item) => item.branchvalue)}
-              increase="+14%"
+              value={thisMonthRegionAccounts.map((item) => item.branchvalue)}
+              increase={
+                <span
+                  style={{
+                    color:
+                      thisMonthRegionAccounts.map((item) => item.branchvalue) -
+                        prevMonthRegionAccounts.map(
+                          (item) => item.branchvalue
+                        ) >=
+                      0
+                        ? theme.palette.secondary[999]
+                        : theme.palette.secondary[888],
+                  }}
+                >
+                  {((thisMonthRegionAccounts.map((item) => item.branchvalue) -
+                    prevMonthRegionAccounts.map((item) => item.branchvalue)) /
+                    prevMonthRegionAccounts.map((item) => item.branchvalue)) *
+                    100}
+                  %
+                </span>
+              }
               description="This Month"
               icon={
                 <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
               }
+              increasee={
+                <span
+                  style={{
+                    color:
+                      thisMonthRegionAccounts.map((item) => item.branchvalue) -
+                        prevMonthRegionAccounts.map(
+                          (item) => item.branchvalue
+                        ) >=
+                      0
+                        ? theme.palette.secondary[999]
+                        : theme.palette.secondary[888],
+                  }}
+                >
+                  {thisMonthRegionAccounts.map((item) => item.branchvalue) -
+                    prevMonthRegionAccounts.map((item) => item.branchvalue)}
+                </span>
+              }
+              descriptionn={data?.thisMonthStats?.month}
+              iconn={
+                thisMonthRegionAccounts.map((item) => item.branchvalue) -
+                  prevMonthRegionAccounts.map((item) => item.branchvalue) >=
+                0 ? (
+                  <ArrowDropUpIcon
+                    style={{
+                      color: theme.palette.secondary[999],
+                      fontSize: "30px",
+                    }}
+                  />
+                ) : (
+                  <ArrowDropDownIcon
+                    style={{
+                      color: theme.palette.secondary[888],
+                      fontSize: "30px",
+                    }}
+                  />
+                )
+              }
             />
             <StatBox
               title="Total Accounts"
               value={todayRegionAccounts.map((item) => item.branchvalue)}
-              increase="+14%"
+              increase={
+                <span
+                  style={{
+                    color:
+                      todayRegionAccounts.map((item) => item.branchvalue) -
+                        prevDayRegionAccounts.map((item) => item.branchvalue) >=
+                      0
+                        ? theme.palette.secondary[999]
+                        : theme.palette.secondary[888],
+                  }}
+                >
+                  {((todayRegionAccounts.map((item) => item.branchvalue) -
+                    prevDayRegionAccounts.map((item) => item.branchvalue)) /
+                    prevDayRegionAccounts.map((item) => item.branchvalue)) *
+                    100}
+                  %
+                </span>
+              }
               description="Todate"
               icon={
                 <AccountBalanceWalletIcon
                   sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
                 />
+              }
+              increasee={
+                <span
+                  style={{
+                    color:
+                      todayRegionAccounts.map((item) => item.branchvalue) -
+                        prevDayRegionAccounts.map((item) => item.branchvalue) >=
+                      0
+                        ? theme.palette.secondary[999]
+                        : theme.palette.secondary[888],
+                  }}
+                >
+                  {todayRegionAccounts.map((item) => item.branchvalue) -
+                    prevDayRegionAccounts.map((item) => item.branchvalue)}
+                </span>
+              }
+              descriptionn={data?.todayStats?.date}
+              iconn={
+                todayRegionAccounts.map((item) => item.branchvalue) -
+                  prevDayRegionAccounts.map((item) => item.branchvalue) >=
+                0 ? (
+                  <ArrowDropUpIcon
+                    style={{
+                      color: theme.palette.secondary[999],
+                      fontSize: "30px",
+                    }}
+                  />
+                ) : (
+                  <ArrowDropDownIcon
+                    style={{
+                      color: theme.palette.secondary[888],
+                      fontSize: "30px",
+                    }}
+                  />
+                )
               }
             />
           </Box>
