@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Box,
-  Divider,
   Drawer,
   IconButton,
   List,
@@ -13,28 +12,14 @@ import {
   useTheme,
 } from "@mui/material";
 import {
-  SettingsOutlined,
   ChevronLeft,
   ChevronRightOutlined,
-  HomeOutlined,
-  ShoppingCartOutlined,
-  Groups2Outlined,
-  ReceiptLongOutlined,
-  PublicOutlined,
-  PointOfSaleOutlined,
-  TodayOutlined,
-  CalendarMonthOutlined,
-  AdminPanelSettingsOutlined,
-  TrendingUpOutlined,
-  PieChartOutlined,
 } from "@mui/icons-material";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
-import profileImage from "assets/FTBlogo.png";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import Collapse from "@mui/material/Collapse";

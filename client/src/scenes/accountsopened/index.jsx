@@ -16,9 +16,8 @@ import {
 import FlexBetween from "../../componets/FlexBetween";
 import Header from "../../componets/Header";
 import StatBox from "../../componets/StatBox";
-import LineChart from "../../componets/LineChart";
-import PieChart from "../../componets/PieChart";
 import { ResponsivePie } from "@nivo/pie";
+import PieChart from "../../componets/PieChart";
 import { DataGrid } from "@mui/x-data-grid";
 import { ArrowDropDown } from "@mui/icons-material";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
@@ -26,14 +25,66 @@ import { useGetAccountsopenedQuery } from "../../state/api";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
+/** 
+import moment from "moment";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import * as XLSX from "xlsx";
+import { styled } from "@mui/material/styles";
+import Alert from "@mui/material/Alert";
+*/
+
 import { ResponsiveLine } from "@nivo/line";
 
-const regions = ["Central A", "Central B", "Far East", "Western"];
+const regions = ["Central A", "Central B", "Far East", "Mid East", "Western"];
+
 const branches = {
-  "Central A": ["Kalerwe Branch", "Katwe Branch", "Mukono Branch", "Nakivubo Branch"],
-  "Central B": ["Masaka Branch"],
-  "Far East": ["Arua Branch", "Busia Branch", "Kapchorwa Branch", "Kumi Branch"],
-  "Western": ["Kamwenge Branch", "Mbarara Branch"],
+  "Central A": [
+    "Central Branch",
+    "Corporate Branch",
+    "Head Office Main",
+    "Kalerwe Branch",
+    "Kampala Road Branch",
+    "Kikuubo",
+    "Kitintale Branch",
+    "Mukono Branch",
+    "Nakivubo Branch",
+    "Nansana",
+  ],
+
+  "Central B": [
+    "Entebbe Branch",
+    "Gomba Branch",
+    "Kalangala Branch",
+    "Katwe Branch",
+    "Lwengo Branch",
+    "Masaka Branch",
+    "Nateete Branch",
+    "Owino Branch",
+  ],
+  "Far East": [
+    "Arua Branch",
+    "Busia Branch",
+    "Kapchorwa",
+    "Kumi Branch",
+    "Mbale Branch",
+    "Pallisa Branch",
+    "Soroti Branch",
+    "Tororo Branch",
+  ],
+  "Mid East": [
+    "Iganga Branch",
+    "Jinja Branch",
+    "Kamuli Branch",
+    "Kayunga Branch",
+    "Lugazi Branch",
+  ],
+  Western: [
+    "Ishaka Branch",
+    "Kabarole Branch",
+    "Kamwenge Branch",
+    "Mbarara Branch",
+    "Ntungamo Branch",
+  ],
 };
 
 const RegionsButtonGroup = ({ onSelect }) => {
@@ -209,6 +260,11 @@ const AccountsOpened = () => {
     branches[selectedRegion]?.[0] || ""
   );
 
+  /**
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  */
+
   const handleRegionSelect = (selectedRegion) => {
     setSelectedRegion(selectedRegion);
     // Reset the selected branch when a new region is selected
@@ -220,8 +276,110 @@ const AccountsOpened = () => {
     // You may perform any other actions needed when a new branch is selected
   };
 
+  /** 
+  // FILE UPLOADER
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
+  const InputFileUpload = () => {
+    const baseUrl = process.env.REACT_APP_BASE_URL;
+    const handleFileChange = async (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: "array" });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const excelData = XLSX.utils.sheet_to_json(worksheet, {
+          raw: false,
+          dateNF: "DD/MM/YYYY",
+          cellDates: true,
+        });
+
+        const formattedData = excelData.map((row) => ({
+          region: row.region,
+          branch: row.branch,
+          product: row.product,
+          gender: row.gender,
+          date: moment(row.date).format("DD/MM/YYYY"),
+        }));
+
+        // Upload all chunks and remaining data at once
+        const jsonString = JSON.stringify(formattedData);
+        try {
+          const response = await fetch(`${baseUrl}/upload`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: jsonString,
+          });
+
+          if (response.ok) {
+            console.log("Data uploaded successfully");
+            setSuccessMessage("Data uploaded successfully");
+            window.location.reload();
+          } else {
+            console.error("Failed to upload data");
+            setErrorMessage("Failed to upload data");
+          }
+        } catch (error) {
+          console.error("Error uploading data:", error);
+          setErrorMessage(`Error uploading data: ${error.message}`);
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    };
+
+    return (
+      <>
+        <Button
+          component="label"
+          role={undefined}
+          variant="contained"
+          tabIndex={-1}
+          startIcon={<CloudUploadIcon />}
+        >
+          Upload Excel file
+          <VisuallyHiddenInput
+            type="file"
+            accept=".xlsx, .xls"
+            onChange={handleFileChange}
+          />
+        </Button>
+
+        {successMessage && (
+          <Alert variant="filled" severity="success">
+            {successMessage}
+          </Alert>
+        )}
+
+        {errorMessage && (
+          <Alert variant="filled" severity="error">
+            {errorMessage}
+          </Alert>
+        )}
+      </>
+    );
+  };
+  */
+
   const { data, isLoading } = useGetAccountsopenedQuery();
-  console.log("DATA", data)
+
+  /**
+  console.log("DATA", data);
+  */
 
   const typeofaccountscolumns = [
     {
@@ -289,14 +447,14 @@ const AccountsOpened = () => {
               (region) => region.region === selectedRegion
             ).totalAccounts,
             branchvalue: filteredItem.regions
-            .find((region) => region.region === selectedRegion)
-            .branches.find((branch) => branch.branch === selectedBranch)
-            .totalAccounts,
+              .find((region) => region.region === selectedRegion)
+              .branches.find((branch) => branch.branch === selectedBranch)
+              .totalAccounts,
           }))
       )
     : [];
 
-    // This Year's Total Accounts opened for the selected region
+  // This Year's Total Accounts opened for the selected region
   const thisYearRegionAccounts = data
     ? [data].flatMap((item) =>
         [item.thisYearStats]
@@ -322,7 +480,7 @@ const AccountsOpened = () => {
           }))
       )
     : [];
-  
+
   // Previous Year's Total Accounts opened for the selected region
   const prevYearRegionAccounts = data
     ? [data].flatMap((item) =>
@@ -353,7 +511,7 @@ const AccountsOpened = () => {
   // Previous Months Total Accounts opened for the selected region
   const prevMonthRegionAccounts = data
     ? [data].flatMap((item) =>
-        [item.thisMonthStats]
+        [item.previousMonthStats]
           .filter((thisMonthItem) =>
             thisMonthItem.regions.some(
               (region) =>
@@ -370,9 +528,9 @@ const AccountsOpened = () => {
               (region) => region.region === selectedRegion
             ).totalAccounts,
             branchvalue: filteredItem.regions
-            .find((region) => region.region === selectedRegion)
-            .branches.find((branch) => branch.branch === selectedBranch)
-            .totalAccounts,
+              .find((region) => region.region === selectedRegion)
+              .branches.find((branch) => branch.branch === selectedBranch)
+              .totalAccounts,
           }))
       )
     : [];
@@ -407,7 +565,7 @@ const AccountsOpened = () => {
   // Previous Day's Total Accounts opened for selected region
   const prevDayRegionAccounts = data
     ? [data].flatMap((item) =>
-        [item.todayStats]
+        [item.previousDateStats]
           .filter((todayItem) =>
             todayItem.regions.some(
               (region) =>
@@ -466,16 +624,10 @@ const AccountsOpened = () => {
     {
       id: "regionAccountsOpened",
       color: theme.palette.secondary.main,
-      data: filteredData.map((item, index) => {
-        let accumulatedTotal = 0;
-        for (let i = 0; i <= index; i++) {
-          accumulatedTotal += filteredData[i].value;
-        }
-        return {
-          x: item.month,
-          y: accumulatedTotal,
-        };
-      }),
+      data: filteredData.map((item) => ({
+        x: item.month,
+        y: item.value,
+      })),
     },
   ];
 
@@ -484,16 +636,29 @@ const AccountsOpened = () => {
     {
       id: "branchAccountsOpened",
       color: theme.palette.secondary.main,
-      data: filteredData.map((item, index) => {
-        let accumulatedTotal = 0;
-        for (let i = 0; i <= index; i++) {
-          accumulatedTotal += filteredData[i].branchvalue;
-        }
-        return {
-          x: item.month,
-          y: accumulatedTotal,
-        };
-      }),
+      data: filteredData.map((item) => ({
+        x: item.month,
+        y: item.branchvalue,
+      })),
+    },
+  ];
+
+  // Prepare data for General Line Chart
+  const filteredDataa = data
+    ? [data].flatMap((item) =>
+        item.monthlyData.map((monthlyItem) => ({
+          x: monthlyItem.month,
+          y: monthlyItem.totalAccounts,
+        }))
+      )
+    : [];
+
+  // General Line Chart Data
+  const lineChartData = [
+    {
+      id: "totalAccountsOpened",
+      color: theme.palette.secondary.main,
+      data: filteredDataa,
     },
   ];
 
@@ -521,53 +686,54 @@ const AccountsOpened = () => {
   }));
 
   // Gender for the selected branch
-const genderBranchAccounts = data
-  ? data.regions
-      .filter((regionItem) => regionItem.region === selectedRegion)
-      .flatMap((region) =>
-        region.branches
-          .filter((branchItem) => branchItem.branch === selectedBranch)
-          .flatMap(({ gender }) =>
-            Object.entries(gender).map(([key, value]) => ({
-              gender: key,
-              value,
-            }))
-          )
-      )
-  : [];
+  const genderBranchAccounts = data
+    ? data.regions
+        .filter((regionItem) => regionItem.region === selectedRegion)
+        .flatMap((region) =>
+          region.branches
+            .filter((branchItem) => branchItem.branch === selectedBranch)
+            .flatMap(({ gender }) =>
+              Object.entries(gender).map(([key, value]) => ({
+                gender: key,
+                value,
+              }))
+            )
+        )
+    : [];
 
-// Prepare data for Branch gender pie chart
-const formattedDataBranch = genderBranchAccounts.map(({ gender, value }, i) => ({
-  id: gender,
-  label: gender,
-  value: value,
-  color: colors[i],
-}));
-
-
+  // Prepare data for Branch gender pie chart
+  const formattedDataBranch = genderBranchAccounts.map(
+    ({ gender, value }, i) => ({
+      id: gender,
+      label: gender,
+      value: value,
+      color: colors[i],
+    })
+  );
 
   // Types of Accounts opened for the selected region
   const regionTypesOfAccounts = data
     ? data.regions
         .filter((regionItem) => regionItem.region === selectedRegion)
         .flatMap(({ typesofAccounts }) =>
-          typesofAccounts.map((account) => ({ ...account }))
+          typesofAccounts
+            ? typesofAccounts.map((account) => ({ ...account }))
+            : []
         )
     : [];
 
   // Types of Accounts opened for the selected branch
-const branchTypesOfAccounts = data
-  ? data.regions
-      .filter((regionItem) => regionItem.region === selectedRegion)
-      .flatMap((region) =>
-        region.branches
-          .filter((branchItem) => branchItem.branch === selectedBranch)
-          .flatMap(({ typesofAccounts }) =>
-            typesofAccounts.map((account) => ({ ...account }))
-          )
-      )
-  : [];
-
+  const branchTypesOfAccounts = data
+    ? data.regions
+        .filter((regionItem) => regionItem.region === selectedRegion)
+        .flatMap((region) =>
+          region.branches
+            .filter((branchItem) => branchItem.branch === selectedBranch)
+            .flatMap(({ typesofAccounts }) =>
+              typesofAccounts.map((account) => ({ ...account }))
+            )
+        )
+    : [];
 
   // Branches and Accounts opened for the selected region
   const regionBranchAccounts = data
@@ -624,7 +790,6 @@ const branchTypesOfAccounts = data
             <StatBox
               title="Total Accounts"
               value={data && data.totalAccounts}
-              
               description="Total Accounts Opened"
               icon={
                 <AccountBalanceWalletIcon
@@ -646,11 +811,12 @@ const branchTypesOfAccounts = data
                         : theme.palette.secondary[888],
                   }}
                 >
-                  {((data?.thisYearStats?.totalAccounts -
-                    data?.previousYearStats?.totalAccounts) /
-                    data?.previousYearStats?.totalAccounts) *
-                    100}
-                  %
+                  {data?.previousYearStats?.totalAccounts !== 0 &&
+                    ((data?.thisYearStats?.totalAccounts -
+                      data?.previousYearStats?.totalAccounts) /
+                      data?.previousYearStats?.totalAccounts) *
+                      100}
+                  %{data?.previousYearStats?.totalAccounts !== 0 && "%"}
                 </span>
               }
               description="This Year"
@@ -718,11 +884,12 @@ const branchTypesOfAccounts = data
                         : theme.palette.secondary[888],
                   }}
                 >
-                  {((data?.thisMonthStats?.totalAccounts -
-                    data?.previousMonthStats?.totalAccounts) /
-                    data?.previousMonthStats?.totalAccounts) *
-                    100}
-                  %
+                  {data?.previousMonthStats?.totalAccounts !== 0 &&
+                    ((data?.thisMonthStats?.totalAccounts -
+                      data?.previousMonthStats?.totalAccounts) /
+                      data?.previousMonthStats?.totalAccounts) *
+                      100}
+                  %{data?.previousMonthStats?.totalAccounts !== 0 && "%"}
                 </span>
               }
               description="This Month"
@@ -746,7 +913,7 @@ const branchTypesOfAccounts = data
                     data?.previousMonthStats?.totalAccounts}
                 </span>
               }
-              descriptionn={data?.thisMonthStats?.month}
+              descriptionn={data?.thisMonthStats?.month.substring(0, 3)}
               iconn={
                 data?.thisMonthStats?.totalAccounts -
                   data?.previousMonthStats?.totalAccounts >=
@@ -781,10 +948,12 @@ const branchTypesOfAccounts = data
                         : theme.palette.secondary[888],
                   }}
                 >
-                  {((data?.todayStats?.totalAccounts -
-                    data?.previousDateStats?.totalAccounts) /
-                    data?.previousDateStats?.totalAccounts) *
-                    100}
+                  {(
+                    ((data?.todayStats?.totalAccounts -
+                      data?.previousDateStats?.totalAccounts) /
+                      data?.previousDateStats?.totalAccounts) *
+                    100
+                  ).toFixed(0)}
                   %
                 </span>
               }
@@ -855,11 +1024,91 @@ const branchTypesOfAccounts = data
           marginTop="6px"
           backgroundColor={theme.palette.background.alt}
         >
-          <LineChart isDashboard={true} />
+          <ResponsiveLine
+            data={lineChartData}
+            theme={{
+              axis: {
+                domain: {
+                  line: {
+                    stroke: theme.palette.secondary[200],
+                  },
+                },
+                legend: {
+                  text: {
+                    fill: theme.palette.secondary[200],
+                  },
+                },
+                ticks: {
+                  line: {
+                    stroke: theme.palette.secondary[200],
+                    strokeWidth: 1,
+                  },
+                  text: {
+                    fill: theme.palette.secondary[200],
+                  },
+                },
+              },
+              legends: {
+                text: {
+                  fill: theme.palette.secondary[200],
+                },
+              },
+              tooltip: {
+                container: {
+                  color: theme.palette.primary.main,
+                },
+              },
+            }}
+            margin={{ top: 10, right: 20, bottom: 30, left: 40 }}
+            xScale={{ type: "point" }}
+            yScale={{
+              type: "linear",
+              min: "auto",
+              max: "auto",
+              stacked: false,
+              reverse: false,
+            }}
+            yFormat=" >-.2f"
+            curve="catmullRom"
+            enableArea={true}
+            axisTop={null}
+            axisRight={null}
+            axisBottom={{
+              format: (v) => {
+                return v.slice(0, 3);
+              },
+              orient: "bottom",
+              tickSize: 5,
+              tickPadding: 5,
+              tickRotation: 0,
+              legend: "",
+              legendOffset: 36,
+              legendPosition: "middle",
+            }}
+            axisLeft={{
+              orient: "left",
+              tickValues: 5,
+              tickSize: 5,
+              tickPadding: 1,
+              tickRotation: 0,
+              legend: "",
+              legendOffset: -60,
+              legendPosition: "middle",
+            }}
+            enableGridX={false}
+            enableGridY={false}
+            pointSize={10}
+            pointColor={{ theme: "background" }}
+            pointBorderWidth={2}
+            pointBorderColor={{ from: "serieColor" }}
+            pointLabelYOffset={-12}
+            useMesh={true}
+            legends={undefined}
+          />
         </Box>
         <Box
           gridColumn="span 5"
-          gridRow="span 3"
+          gridRow="span 4"
           marginLeft="6px"
           borderRadius="0.55rem"
           marginTop="6px"
@@ -887,7 +1136,7 @@ const branchTypesOfAccounts = data
         >
           <DataGrid
             loading={isLoading || !data}
-            getRowId={(row) => row._id}
+            getRowId={(row) => row.id}
             rows={(data && data.typesofAccounts) || []}
             columns={typeofaccountscolumns}
             rowHeight={25}
@@ -897,7 +1146,7 @@ const branchTypesOfAccounts = data
         </Box>
         <Box
           gridColumn="span 4"
-          gridRow="span 3"
+          gridRow="span 4"
           marginLeft="6px"
           borderRadius="0.55rem"
           marginTop="6px"
@@ -925,7 +1174,7 @@ const branchTypesOfAccounts = data
         >
           <DataGrid
             loading={isLoading || !data}
-            getRowId={(row) => row._id}
+            getRowId={(row) => row.id}
             rows={(data && data.regions) || []}
             columns={regionscolumns}
             rowHeight={25}
@@ -967,7 +1216,6 @@ const branchTypesOfAccounts = data
             <StatBox
               title="Total Accounts"
               value={regionAccounts.map(({ totalAccounts }) => totalAccounts)}
-              
               description="Total Accounts Opened"
               icon={
                 <AccountBalanceWalletIcon
@@ -989,11 +1237,12 @@ const branchTypesOfAccounts = data
                         : theme.palette.secondary[888],
                   }}
                 >
-                  {((thisYearRegionAccounts.map((item) => item.value) -
-                    prevYearRegionAccounts.map((item) => item.value)) /
-                    prevYearRegionAccounts.map((item) => item.value)) *
-                    100}
-                  %
+                  {data?.previousYearStats?.totalAccounts !== 0 &&
+                    ((thisYearRegionAccounts.map((item) => item.value) -
+                      prevYearRegionAccounts.map((item) => item.value)) /
+                      prevYearRegionAccounts.map((item) => item.value)) *
+                      100}
+                  %{data?.previousYearStats?.totalAccounts !== 0 && "%"}
                 </span>
               }
               description="This Year"
@@ -1061,11 +1310,12 @@ const branchTypesOfAccounts = data
                         : theme.palette.secondary[888],
                   }}
                 >
-                  {((thisMonthRegionAccounts.map((item) => item.value) -
-                    prevMonthRegionAccounts.map((item) => item.value)) /
-                    prevMonthRegionAccounts.map((item) => item.value)) *
-                    100}
-                  %
+                  {data?.previousMonthStats?.totalAccounts !== 0 &&
+                    ((thisMonthRegionAccounts.map((item) => item.value) -
+                      prevMonthRegionAccounts.map((item) => item.value)) /
+                      prevMonthRegionAccounts.map((item) => item.value)) *
+                      100}
+                  %{data?.previousMonthStats?.totalAccounts !== 0 && "%"}
                 </span>
               }
               description="This Month"
@@ -1089,7 +1339,7 @@ const branchTypesOfAccounts = data
                     prevMonthRegionAccounts.map((item) => item.value)}
                 </span>
               }
-              descriptionn={data?.thisMonthStats?.month}
+              descriptionn={data?.thisMonthStats?.month.substring(0, 3)}
               iconn={
                 thisMonthRegionAccounts.map((item) => item.value) -
                   prevMonthRegionAccounts.map((item) => item.value) >=
@@ -1124,10 +1374,12 @@ const branchTypesOfAccounts = data
                         : theme.palette.secondary[888],
                   }}
                 >
-                  {((todayRegionAccounts.map((item) => item.value) -
-                    prevDayRegionAccounts.map((item) => item.value)) /
-                    prevDayRegionAccounts.map((item) => item.value)) *
-                    100}
+                  {(
+                    ((todayRegionAccounts.map((item) => item.value) -
+                      prevDayRegionAccounts.map((item) => item.value)) /
+                      prevDayRegionAccounts.map((item) => item.value)) *
+                    100
+                  ).toFixed(0)}
                   %
                 </span>
               }
@@ -1274,21 +1526,6 @@ const branchTypesOfAccounts = data
                 },
               ]}
             />
-            <Box
-              position="absolute"
-              top="50%"
-              left="55%"
-              color={theme.palette.secondary[400]}
-              textAlign="center"
-              pointerEvents="none"
-              sx={{
-                transform: "translate(-75%, -170%)",
-              }}
-            >
-              <Typography variant="h6">
-                {regionAccounts.map(({ totalAccounts }) => totalAccounts)}
-              </Typography>
-            </Box>
           </Box>
         </Box>
         <Box
@@ -1384,7 +1621,7 @@ const branchTypesOfAccounts = data
         </Box>
         <Box
           gridColumn="span 5"
-          gridRow="span 3"
+          gridRow="span 4"
           marginLeft="6px"
           borderRadius="0.55rem"
           marginTop="6px"
@@ -1412,7 +1649,7 @@ const branchTypesOfAccounts = data
         >
           <DataGrid
             loading={isLoading || !data}
-            getRowId={(row) => row._id}
+            getRowId={(row) => row.id}
             rows={regionTypesOfAccounts || []}
             columns={typeofaccountscolumns}
             rowHeight={25}
@@ -1422,7 +1659,7 @@ const branchTypesOfAccounts = data
         </Box>
         <Box
           gridColumn="span 4"
-          gridRow="span 3"
+          gridRow="span 4"
           marginLeft="6px"
           borderRadius="0.55rem"
           marginTop="6px"
@@ -1450,7 +1687,7 @@ const branchTypesOfAccounts = data
         >
           <DataGrid
             loading={isLoading || !data}
-            getRowId={(row) => row._id}
+            getRowId={(row) => row.id}
             rows={(data && regionBranchAccounts) || []}
             columns={branchcolumns}
             rowHeight={25}
@@ -1495,7 +1732,6 @@ const branchTypesOfAccounts = data
             <StatBox
               title="Total Accounts"
               value={branchAccounts.map((item) => item.totalAccounts)}
-              
               description="Total Accounts Opened"
               icon={
                 <AccountBalanceWalletIcon
@@ -1511,17 +1747,20 @@ const branchTypesOfAccounts = data
                   style={{
                     color:
                       thisYearRegionAccounts.map((item) => item.branchvalue) -
-                        prevYearRegionAccounts.map((item) => item.branchvalue) >=
+                        prevYearRegionAccounts.map(
+                          (item) => item.branchvalue
+                        ) >=
                       0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
                 >
-                  {((thisYearRegionAccounts.map((item) => item.branchvalue) -
-                    prevYearRegionAccounts.map((item) => item.branchvalue)) /
-                    prevYearRegionAccounts.map((item) => item.branchvalue)) *
-                    100}
-                  %
+                  {data?.previousYearStats?.totalAccounts !== 0 &&
+                    ((thisYearRegionAccounts.map((item) => item.branchvalue) -
+                      prevYearRegionAccounts.map((item) => item.branchvalue)) /
+                      prevYearRegionAccounts.map((item) => item.branchvalue)) *
+                      100}
+                  %{data?.previousYearStats?.totalAccounts !== 0 && "%"}
                 </span>
               }
               description="This Year"
@@ -1535,7 +1774,9 @@ const branchTypesOfAccounts = data
                   style={{
                     color:
                       thisYearRegionAccounts.map((item) => item.branchvalue) -
-                        prevYearRegionAccounts.map((item) => item.branchvalue) >=
+                        prevYearRegionAccounts.map(
+                          (item) => item.branchvalue
+                        ) >=
                       0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
@@ -1591,11 +1832,12 @@ const branchTypesOfAccounts = data
                         : theme.palette.secondary[888],
                   }}
                 >
-                  {((thisMonthRegionAccounts.map((item) => item.branchvalue) -
-                    prevMonthRegionAccounts.map((item) => item.branchvalue)) /
-                    prevMonthRegionAccounts.map((item) => item.branchvalue)) *
-                    100}
-                  %
+                  {data?.previousMonthStats?.totalAccounts !== 0 &&
+                    ((thisMonthRegionAccounts.map((item) => item.branchvalue) -
+                      prevMonthRegionAccounts.map((item) => item.branchvalue)) /
+                      prevMonthRegionAccounts.map((item) => item.branchvalue)) *
+                      100}
+                  %{data?.previousMonthStats?.totalAccounts !== 0 && "%"}
                 </span>
               }
               description="This Month"
@@ -1621,7 +1863,7 @@ const branchTypesOfAccounts = data
                     prevMonthRegionAccounts.map((item) => item.branchvalue)}
                 </span>
               }
-              descriptionn={data?.thisMonthStats?.month}
+              descriptionn={data?.thisMonthStats?.month.substring(0, 3)}
               iconn={
                 thisMonthRegionAccounts.map((item) => item.branchvalue) -
                   prevMonthRegionAccounts.map((item) => item.branchvalue) >=
@@ -1656,10 +1898,12 @@ const branchTypesOfAccounts = data
                         : theme.palette.secondary[888],
                   }}
                 >
-                  {((todayRegionAccounts.map((item) => item.branchvalue) -
-                    prevDayRegionAccounts.map((item) => item.branchvalue)) /
-                    prevDayRegionAccounts.map((item) => item.branchvalue)) *
-                    100}
+                  {(
+                    ((todayRegionAccounts.map((item) => item.branchvalue) -
+                      prevDayRegionAccounts.map((item) => item.branchvalue)) /
+                      prevDayRegionAccounts.map((item) => item.branchvalue)) *
+                    100
+                  ).toFixed(0)}
                   %
                 </span>
               }
@@ -1806,21 +2050,6 @@ const branchTypesOfAccounts = data
                 },
               ]}
             />
-            <Box
-              position="absolute"
-              top="50%"
-              left="55%"
-              color={theme.palette.secondary[400]}
-              textAlign="center"
-              pointerEvents="none"
-              sx={{
-                transform: "translate(-75%, -170%)",
-              }}
-            >
-              <Typography variant="h6">
-                {branchAccounts.map((item) => item.totalAccounts)}
-              </Typography>
-            </Box>
           </Box>
         </Box>
         <Box
@@ -1916,7 +2145,7 @@ const branchTypesOfAccounts = data
         </Box>
         <Box
           gridColumn="span 5"
-          gridRow="span 3"
+          gridRow="span 4"
           marginLeft="6px"
           borderRadius="0.55rem"
           marginTop="6px"
@@ -1944,7 +2173,7 @@ const branchTypesOfAccounts = data
         >
           <DataGrid
             loading={isLoading || !data}
-            getRowId={(row) => row._id}
+            getRowId={(row) => row.id}
             rows={branchTypesOfAccounts || []}
             columns={typeofaccountscolumns}
             rowHeight={25}
@@ -1954,7 +2183,7 @@ const branchTypesOfAccounts = data
         </Box>
         <Box
           gridColumn="span 4"
-          gridRow="span 3"
+          gridRow="span 4"
           marginLeft="6px"
           borderRadius="0.55rem"
           marginTop="6px"
@@ -1982,7 +2211,7 @@ const branchTypesOfAccounts = data
         >
           <DataGrid
             loading={isLoading || !data}
-            getRowId={(row) => row._id}
+            getRowId={(row) => row.id}
             rows={(data && data.regions) || []}
             columns={regionscolumns}
             rowHeight={25}

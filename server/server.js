@@ -10,11 +10,11 @@ import corsOptions from "./config/corsOptions.js";
 import connectDB from "./config/dbConn.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import rootRoutes from './routes/root.js';
-import accountsOpenedRoutes from './routes/accountsOpenedRoutes.js'
+import rootRoutes from "./routes/root.js";
+import accountsOpenedRoutes from "./routes/accountsOpenedRoutes.js";
 
 // data imports
-import accountsOpened from "./models/accountsOpened.js";
+import Accounts from "./models/accounts.js";
 import { dataAccountsOpened } from "./data/index.js";
 
 /* CONFIGURATION */
@@ -25,8 +25,8 @@ import helmet from "helmet";
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ limit: "900mb" }));
+app.use(bodyParser.urlencoded({ limit: "100mb", extended: false }));
 app.use(cors(corsOptions));
 app.use(logger);
 app.use(cookieParser());
@@ -38,6 +38,27 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.use("/", express.static(path.join(__dirname, "public")));
 app.use("/", rootRoutes);
 app.use("/accountsopened", accountsOpenedRoutes);
+
+/**
+// Define route handler for POST /upload
+app.post("/upload", async (req, res) => {
+  //console.log("Request body size:", req.body.length);
+  try {
+    // Get the JSON data from the request body
+    const jsonData = req.body;
+
+    // Save the JSON data to MongoDB
+    const result = await Accounts.insertMany(jsonData);
+
+    // Send a success response
+    res.status(201).json({ message: "Data saved successfully", data: result });
+  } catch (error) {
+    // Send an error response if something goes wrong
+    console.error("Error saving data:", error);
+    res.status(500).json({ message: "Failed to save data" });
+  }
+});
+*/
 
 /* MONGOOSE SETUP */
 app.all("*", (req, res) => {
@@ -56,12 +77,13 @@ const PORT = process.env.PORT || 3500;
 console.log(process.env.NODE_ENV);
 connectDB();
 app.use(errorHandler);
+
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
   /* ONLY ADD DATA ONE TIME */
-  // accountsOpened.insertMany(dataAccountsOpened);
+  //Accounts.insertMany(dataAccountsOpened);
 });
 
 mongoose.connection.on("error", (err) => {

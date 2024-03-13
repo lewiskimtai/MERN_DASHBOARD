@@ -1,6 +1,6 @@
 import React from "react";
 import { ResponsivePie } from "@nivo/pie";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import { useGetAccountsopenedQuery } from "state/api";
 
 const PieChart = ({ isDashboard = false }) => {
@@ -110,23 +110,6 @@ const PieChart = ({ isDashboard = false }) => {
           },
         ]}
       />
-      <Box
-        position="absolute"
-        top="50%"
-        left="55%"
-        color={theme.palette.secondary[400]}
-        textAlign="center"
-        pointerEvents="none"
-        sx={{
-          transform: isDashboard
-            ? "translate(-75%, -170%)"
-            : "translate(-50%, -100%)",
-        }}
-      >
-        <Typography variant="h6">
-          {!isDashboard && "Total:"} {data.totalAccounts}
-        </Typography>
-      </Box>
     </Box>
   );
 };

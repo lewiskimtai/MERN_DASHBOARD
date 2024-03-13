@@ -52,7 +52,7 @@ const StatBox = ({ title, value, increase, icon, description, increasee, iconn, 
           {increasee}
           {iconn}
         </Typography>
-        <Typography variant="h7">{descriptionn}</Typography>
+        <Typography variant="h8">{descriptionn}</Typography>
       </FlexBetween>
     </Box>
   );
