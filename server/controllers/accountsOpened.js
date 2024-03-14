@@ -29,10 +29,10 @@ export const getAccountsOpened = asyncHandler(async (req, res) => {
   const totalAccounts = result.length;
   // Gender
   const maleCount = result.filter(
-    (account) => account.gender === "Male"
+    (account) => account.gender === "MALE"
   ).length;
   const femaleCount = result.filter(
-    (account) => account.gender === "Female"
+    (account) => account.gender === "FEMALE"
   ).length;
 
   const typesofAccounts = [];
@@ -68,8 +68,8 @@ export const getAccountsOpened = asyncHandler(async (req, res) => {
       };
     }
     regionsData[region].totalAccounts++;
-    if (gender === "Male") regionsData[region].maleCount++;
-    if (gender === "Female") regionsData[region].femaleCount++;
+    if (gender === "MALE") regionsData[region].maleCount++;
+    if (gender === "FEMALE") regionsData[region].femaleCount++;
     if (!regionsData[region].branches[branch]) {
       regionsData[region].branches[branch] = {
         id: branchId++, // Unique numerical identifier for branch
@@ -80,8 +80,8 @@ export const getAccountsOpened = asyncHandler(async (req, res) => {
       };
     }
     regionsData[region].branches[branch].totalAccounts++;
-    if (gender === "Male") regionsData[region].branches[branch].maleCount++;
-    if (gender === "Female") regionsData[region].branches[branch].femaleCount++;
+    if (gender === "MALE") regionsData[region].branches[branch].maleCount++;
+    if (gender === "FEMALE") regionsData[region].branches[branch].femaleCount++;
     if (!regionsData[region].branches[branch].typesofAccounts[product]) {
       regionsData[region].branches[branch].typesofAccounts[product] = 0;
     }
@@ -316,7 +316,7 @@ export const getAccountsOpened = asyncHandler(async (req, res) => {
       existingBranch.typesofAccounts.push({ type: product, totalAccounts: 1 });
     }
 
-    if (gender === "Male" || gender === "Female") {
+    if (gender === "MALE" || gender === "FEMALE") {
       let existingGender = existingDayData.genders.find(
         (gen) => gen.gender === gender
       );
