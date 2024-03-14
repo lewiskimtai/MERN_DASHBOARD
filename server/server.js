@@ -14,7 +14,7 @@ import rootRoutes from "./routes/root.js";
 import accountsOpenedRoutes from "./routes/accountsOpenedRoutes.js";
 
 // data imports
-import Accounts from "./models/accounts.js";
+import Accountsopened from "./models/accountsOpened.js";
 import { dataAccountsOpened } from "./data/index.js";
 
 /* CONFIGURATION */
@@ -83,7 +83,7 @@ mongoose.connection.once("open", () => {
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
   /* ONLY ADD DATA ONE TIME */
-  //Accounts.insertMany(dataAccountsOpened);
+  //Accountsopened.insertMany(dataAccountsOpened);
 });
 
 mongoose.connection.on("error", (err) => {

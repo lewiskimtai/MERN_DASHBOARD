@@ -1,4 +1,4 @@
-import Accounts from "../models/accounts.js";
+import Accountsopened from "../models/accountsOpened.js";
 import asyncHandler from "express-async-handler";
 
 /** 
@@ -17,7 +17,7 @@ export const uploadAccountsData = async (req, res) => {
 
 export const getAccountsOpened = asyncHandler(async (req, res) => {
   // Get number of accounts opened from MongoDB
-  const result = await Accounts.find().lean();
+  const result = await Accountsopened.find().lean();
 
   // If no accounts opened
   if (!result?.length) {
