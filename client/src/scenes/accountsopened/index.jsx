@@ -377,9 +377,9 @@ const AccountsOpened = () => {
 
   const { data, isLoading } = useGetAccountsopenedQuery();
 
-  
+  /**
   console.log("DATA", data);
-
+  */
 
   const typeofaccountscolumns = [
     {
