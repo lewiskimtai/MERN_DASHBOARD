@@ -512,11 +512,11 @@ export const getAccountsOpened = asyncHandler(async (req, res) => {
   );
 
   res.status(200).json({
-    totalAccounts: data.totalAccounts,
-    typesofAccounts: data.typesofAccounts,
-    regions: data.regions,
-    monthlyData: data.monthlyData,
-    gender: data.gender,
+    // totalAccounts: data.totalAccounts,
+    // typesofAccounts: data.typesofAccounts,
+    // regions: data.regions,
+    // monthlyData: data.monthlyData,
+    // gender: data.gender,
     thisMonthStats,
     todayStats,
     thisYearStats,
