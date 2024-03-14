@@ -20,8 +20,11 @@ function App() {
           <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<Navigate to="/home" replace />} />
-              <Route path="/accountsopened" element={<AccountsOpened />} />
               <Route path="/home" element={<Home />} />
+              <Route path="/accountsopened" element={<AccountsOpened />} />
+              <Route path="/deposits" element={<Home />} />
+              <Route path="/dormancy" element={<Home />} />
+              <Route path="/loans" element={<Home />} />
             </Route>
           </Routes>
         </ThemeProvider>
