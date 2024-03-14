@@ -109,8 +109,8 @@ export const getAccountsOpened = asyncHandler(async (req, res) => {
           branch,
           totalAccounts: regionsData[region].branches[branch].totalAccounts,
           gender: {
-            MALE: regionsData[region].branches[branch].maleCount,
-            FEMALE: regionsData[region].branches[branch].femaleCount,
+            male: regionsData[region].branches[branch].maleCount,
+            female: regionsData[region].branches[branch].femaleCount,
           },
           typesofAccounts,
         };
@@ -130,8 +130,8 @@ export const getAccountsOpened = asyncHandler(async (req, res) => {
       region,
       totalAccounts: regionsData[region].totalAccounts,
       gender: {
-        MALE: regionsData[region].maleCount,
-        FEMALE: regionsData[region].femaleCount,
+        male: regionsData[region].maleCount,
+        female: regionsData[region].femaleCount,
       },
       branches: branchData,
       typesofAccounts,
@@ -349,8 +349,8 @@ export const getAccountsOpened = asyncHandler(async (req, res) => {
   const data = {
     totalAccounts,
     gender: {
-      MALE: maleCount,
-      FEMALE: femaleCount,
+      male: maleCount,
+      female: femaleCount,
     },
     typesofAccounts,
     regions,
