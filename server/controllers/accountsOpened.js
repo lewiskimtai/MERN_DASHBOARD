@@ -394,7 +394,7 @@ export const getAccountsOpened = asyncHandler(async (req, res) => {
   const currentMonth = montthsArray[recenttMonthIndex - 1];
 
   // Parse the dates in the 'DD/MM/YYYY' format and convert them to Date objects
-  const datees = dailyDataa.map((item) => {
+  const datees = dailyData.map((item) => {
     const dateParts = item.date.split("/");
     return new Date(`${dateParts[2]}-${dateParts[1]}-${dateParts[0]}`);
   });
@@ -402,15 +402,15 @@ export const getAccountsOpened = asyncHandler(async (req, res) => {
   // Find the maximum date
   const latestDate = new Date(Math.max(...datees));
 
-  const currentDay = latestDate.toLocaleDateString();
-
-  // Sort the dates in descending order
-  datees.sort((a, b) => b - a);
-
   // Get the second element, which is the second latest date
-  const previousDate = datees[1];
+  const previousDate = datees.sort((a, b) => b - a)[1];
 
-  // Format the previous date as a string in the 'DD/MM/YYYY' format
+  // Format the dates as strings in the 'DD/MM/YYYY' format for comparison
+  const currentDay = `${latestDate.getDate().toString().padStart(2, "0")}/${(
+    latestDate.getMonth() + 1
+  )
+    .toString()
+    .padStart(2, "0")}/${latestDate.getFullYear()}`;
   const previousDay = `${previousDate.getDate().toString().padStart(2, "0")}/${(
     previousDate.getMonth() + 1
   )
