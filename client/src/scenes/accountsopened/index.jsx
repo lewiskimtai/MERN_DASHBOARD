@@ -87,6 +87,7 @@ const branches = {
   ],
 };
 
+// REGION BUTTON
 const RegionsButtonGroup = ({ onSelect }) => {
   const [open, setOpen] = useState(false);
   const anchorRef = React.useRef(null);
@@ -168,12 +169,14 @@ const RegionsButtonGroup = ({ onSelect }) => {
   );
 };
 
+// BRANCH BUTTON
 const BranchesButtonGroup = ({ selectedOption, onSelect }) => {
   const [open, setOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const anchorRef = React.useRef(null);
 
-  const secondOptions = branches[selectedOption] || [];
+  const secondOptions = branches[selectedOption] || branches[regions[0]] || [];
+
 
   const handleMenuItemClick = (index) => {
     setSelectedIndex(index);
@@ -418,6 +421,7 @@ const AccountsOpened = () => {
     },
   ];
 
+  // REGION LOGIC SECTION //
   // Total Accounts opened for the selected region
   const regionAccounts = data
     ? [data].flatMap((item) =>
@@ -754,10 +758,68 @@ const AccountsOpened = () => {
         )
     : [];
 
+
+  // Today's Total Accounts opened for selected Branch
+  const todayBranchAccounts = data
+    ? [data].flatMap((item) =>
+        [item.todayStats]
+          .filter((todayItem) =>
+            todayItem.regions.some(
+              (region) =>
+                (!selectedRegion || region.region === selectedRegion) &&
+                (!selectedBranch ||
+                  region.branches.some(
+                    (branch) => branch.branch === selectedBranch
+                  ))
+            )
+          )
+          .map((filteredItem) => ({
+            month: filteredItem.month,
+            value: filteredItem.regions.find(
+              (region) => region.region === selectedRegion
+            ).totalAccounts,
+            branchvalue: filteredItem.regions
+              .find((region) => region.region === selectedRegion)
+              .branches.find((branch) => branch.branch === selectedBranch)
+              .totalAccounts,
+          }))
+      )
+    : [];
+
+  // Previous Day's Total Accounts opened for selected Branch
+  const prevDayBranchAccounts = data
+    ? [data].flatMap((item) =>
+        [item.previousDateStats]
+          .filter((todayItem) =>
+            todayItem.regions.some(
+              (region) =>
+                (!selectedRegion || region.region === selectedRegion) &&
+                (!selectedBranch ||
+                  region.branches.some(
+                    (branch) => branch.branch === selectedBranch
+                  ))
+            )
+          )
+          .map((filteredItem) => ({
+            month: filteredItem.month,
+            value: filteredItem.regions.find(
+              (region) => region.region === selectedRegion
+            ).totalAccounts,
+            branchvalue: filteredItem.regions
+              .find((region) => region.region === selectedRegion)
+              .branches.find((branch) => branch.branch === selectedBranch)
+              .totalAccounts,
+          }))
+      )
+    : [];
+
   return (
     <Box m="0.4rem 2.5rem">
       <FlexBetween>
-        <Header title="ACCOUNTS OPENED" subtitle="General Statistics" />
+        <Header
+          title={`ACCOUNTS OPENED BETWEEN 01/02/2024 AND ${data?.todayStats?.date}`}
+          subtitle="General Statistics"
+        />
       </FlexBetween>
       <Box
         mt="2px"
@@ -1183,6 +1245,7 @@ const AccountsOpened = () => {
           />
         </Box>
       </Box>
+
       <FlexBetween>
         <Header subtitle="Regional Statistics" />
         <RegionsButtonGroup onSelect={handleRegionSelect} />
@@ -1195,7 +1258,9 @@ const AccountsOpened = () => {
         gridAutoRows="50px"
         gap="1px"
         sx={{
-          "& > div": { gridColumn: isNonMediumScreens ? undefined : "span 20" },
+          "& > div": {
+            gridColumn: isNonMediumScreens ? undefined : "span 20",
+          },
         }}
       >
         <Box
@@ -1219,7 +1284,10 @@ const AccountsOpened = () => {
               description="Total Accounts Opened"
               icon={
                 <AccountBalanceWalletIcon
-                  sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
+                  sx={{
+                    color: theme.palette.secondary[300],
+                    fontSize: "20px",
+                  }}
                 />
               }
             />
@@ -1248,7 +1316,10 @@ const AccountsOpened = () => {
               description="This Year"
               icon={
                 <AccountBalanceWalletIcon
-                  sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
+                  sx={{
+                    color: theme.palette.secondary[300],
+                    fontSize: "20px",
+                  }}
                 />
               }
               increasee={
@@ -1321,7 +1392,10 @@ const AccountsOpened = () => {
               description="This Month"
               icon={
                 <AccountBalanceWalletIcon
-                  sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
+                  sx={{
+                    color: theme.palette.secondary[300],
+                    fontSize: "20px",
+                  }}
                 />
               }
               increasee={
@@ -1386,7 +1460,10 @@ const AccountsOpened = () => {
               description="Todate"
               icon={
                 <AccountBalanceWalletIcon
-                  sx={{ color: theme.palette.secondary[300], fontSize: "20px" }}
+                  sx={{
+                    color: theme.palette.secondary[300],
+                    fontSize: "20px",
+                  }}
                 />
               }
               increasee={
@@ -1696,6 +1773,7 @@ const AccountsOpened = () => {
           />
         </Box>
       </Box>
+
       <FlexBetween>
         <Header subtitle="Branch Statistics" />
         <BranchesButtonGroup
@@ -1886,25 +1964,30 @@ const AccountsOpened = () => {
             />
             <StatBox
               title="Total Accounts"
-              value={todayRegionAccounts.map((item) => item.branchvalue)}
+              value={todayBranchAccounts.map((item) => item.branchvalue)}
               increase={
                 <span
                   style={{
                     color:
-                      todayRegionAccounts.map((item) => item.branchvalue) -
-                        prevDayRegionAccounts.map((item) => item.branchvalue) >=
+                      todayBranchAccounts.map((item) => item.branchvalue) -
+                        prevDayBranchAccounts.map((item) => item.branchvalue) >=
                       0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
                 >
-                  {(
-                    ((todayRegionAccounts.map((item) => item.branchvalue) -
-                      prevDayRegionAccounts.map((item) => item.branchvalue)) /
-                      prevDayRegionAccounts.map((item) => item.branchvalue)) *
-                    100
-                  ).toFixed(0)}
-                  %
+                  {(() => {
+                    const percentageChange = (
+                      ((todayBranchAccounts.map((item) => item.branchvalue) -
+                        prevDayBranchAccounts.map((item) => item.branchvalue)) /
+                        prevDayBranchAccounts.map((item) => item.branchvalue)) *
+                      100
+                    ).toFixed(0);
+
+                    return isFinite(percentageChange)
+                      ? `${percentageChange}%`
+                      : "%";
+                  })()}
                 </span>
               }
               description="Todate"

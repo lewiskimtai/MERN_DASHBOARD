@@ -406,11 +406,14 @@ export const getAccountsOpened = asyncHandler(async (req, res) => {
   const previousDate = datees.sort((a, b) => b - a)[1];
 
   // Format the dates as strings in the 'DD/MM/YYYY' format for comparison
+  // Current Date
   const currentDay = `${latestDate.getDate().toString().padStart(2, "0")}/${(
     latestDate.getMonth() + 1
   )
     .toString()
     .padStart(2, "0")}/${latestDate.getFullYear()}`;
+
+  // Previous Date
   const previousDay = `${previousDate.getDate().toString().padStart(2, "0")}/${(
     previousDate.getMonth() + 1
   )

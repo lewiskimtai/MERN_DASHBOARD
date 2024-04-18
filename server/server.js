@@ -13,6 +13,10 @@ import dotenv from "dotenv";
 import rootRoutes from "./routes/root.js";
 import accountsOpenedRoutes from "./routes/accountsOpenedRoutes.js";
 
+/** 
+import { exec } from "child_process";
+*/
+
 // data imports
 import Accountsopened from "./models/accountsOpened.js";
 import { dataAccountsOpened } from "./data/index.js";
@@ -25,8 +29,8 @@ import helmet from "helmet";
 app.use(helmet());
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
-app.use(bodyParser.json({ limit: "900mb" }));
-app.use(bodyParser.urlencoded({ limit: "100mb", extended: false }));
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors(corsOptions));
 app.use(logger);
 app.use(cookieParser());
@@ -41,21 +45,36 @@ app.use("/accountsopened", accountsOpenedRoutes);
 
 /**
 // Define route handler for POST /upload
-app.post("/upload", async (req, res) => {
-  //console.log("Request body size:", req.body.length);
+
+
+app.post('/upload', async (req, res) => {
   try {
-    // Get the JSON data from the request body
+    // Assume req.body contains the JSON data to import
     const jsonData = req.body;
 
-    // Save the JSON data to MongoDB
-    const result = await Accounts.insertMany(jsonData);
+    // Convert the JSON data to a string
+    const jsonString = JSON.stringify(jsonData);
 
-    // Send a success response
-    res.status(201).json({ message: "Data saved successfully", data: result });
+    // Use mongoimport to import the JSON data
+    const command = `echo '${jsonString}' | mongoimport --uri=${process.env.DATABASE_URI} --collection=${process.env.COLLECTION_NAME} --jsonArray`;
+
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error: ${error.message}`);
+        res.status(500).json({ message: 'Failed to import data' });
+        return;
+      }
+      if (stderr) {
+        console.error(`stderr: ${stderr}`);
+        res.status(500).json({ message: 'Failed to import data' });
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+      res.status(201).json({ message: 'Data imported successfully' });
+    });
   } catch (error) {
-    // Send an error response if something goes wrong
-    console.error("Error saving data:", error);
-    res.status(500).json({ message: "Failed to save data" });
+    console.error('Error importing data:', error);
+    res.status(500).json({ message: 'Failed to import data' });
   }
 });
 */
