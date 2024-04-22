@@ -488,6 +488,7 @@ export const getAccountsOpened = asyncHandler(async (req, res) => {
     ({ month }) => month === previousMonth
   );
 
+  /** 
   if (!previousMonthStats) {
     // If there is no previous month, create a new object with month and set all totalAccount variables to 0
     previousMonthStats = {
@@ -508,6 +509,7 @@ export const getAccountsOpened = asyncHandler(async (req, res) => {
       });
     });
   }
+  */
 
   // Calculate the previous date
   const previousDateStats = data.dailyData.find(

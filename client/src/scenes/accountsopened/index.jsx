@@ -405,7 +405,7 @@ const AccountsOpened = () => {
     {
       field: "totalAccounts",
       headerName: "Sum",
-      flex: 0.01,
+      flex: 0.2,
     },
   ];
   const branchcolumns = [
@@ -425,202 +425,202 @@ const AccountsOpened = () => {
   // Total Accounts opened for the selected region
   const regionAccounts = data
     ? [data].flatMap((item) =>
-        item.regions
-          .filter((regionItem) => regionItem.region === selectedRegion)
-          .map(({ region, totalAccounts }) => ({ region, totalAccounts }))
-      )
+      item.regions
+        .filter((regionItem) => regionItem.region === selectedRegion)
+        .map(({ region, totalAccounts }) => ({ region, totalAccounts }))
+    )
     : [];
 
   // This Months Total Accounts opened for the selected region
   const thisMonthRegionAccounts = data
     ? [data].flatMap((item) =>
-        [item.thisMonthStats]
-          .filter((thisMonthItem) =>
-            thisMonthItem.regions.some(
-              (region) =>
-                (!selectedRegion || region.region === selectedRegion) &&
-                (!selectedBranch ||
-                  region.branches.some(
-                    (branch) => branch.branch === selectedBranch
-                  ))
-            )
+      [item.thisMonthStats]
+        .filter((thisMonthItem) =>
+          thisMonthItem.regions.some(
+            (region) =>
+              (!selectedRegion || region.region === selectedRegion) &&
+              (!selectedBranch ||
+                region.branches.some(
+                  (branch) => branch.branch === selectedBranch
+                ))
           )
-          .map((filteredItem) => ({
-            month: filteredItem.month,
-            value: filteredItem.regions.find(
-              (region) => region.region === selectedRegion
-            ).totalAccounts,
-            branchvalue: filteredItem.regions
-              .find((region) => region.region === selectedRegion)
-              .branches.find((branch) => branch.branch === selectedBranch)
-              .totalAccounts,
-          }))
-      )
+        )
+        .map((filteredItem) => ({
+          month: filteredItem.month,
+          value: filteredItem.regions.find(
+            (region) => region.region === selectedRegion
+          ).totalAccounts,
+          branchvalue: filteredItem.regions
+            .find((region) => region.region === selectedRegion)
+            .branches.find((branch) => branch.branch === selectedBranch)
+            .totalAccounts,
+        }))
+    )
     : [];
 
   // This Year's Total Accounts opened for the selected region
   const thisYearRegionAccounts = data
     ? [data].flatMap((item) =>
-        [item.thisYearStats]
-          .filter((thisYearItem) =>
-            thisYearItem.regions.some(
-              (region) =>
-                (!selectedRegion || region.region === selectedRegion) &&
-                (!selectedBranch ||
-                  region.branches.some(
-                    (branch) => branch.branch === selectedBranch
-                  ))
-            )
+      [item.thisYearStats]
+        .filter((thisYearItem) =>
+          thisYearItem.regions.some(
+            (region) =>
+              (!selectedRegion || region.region === selectedRegion) &&
+              (!selectedBranch ||
+                region.branches.some(
+                  (branch) => branch.branch === selectedBranch
+                ))
           )
-          .map((filteredItem) => ({
-            year: filteredItem.year,
-            value: filteredItem.regions.find(
-              (region) => region.region === selectedRegion
-            ).totalAccounts,
-            branchvalue: filteredItem.regions
-              .find((region) => region.region === selectedRegion)
-              .branches.find((branch) => branch.branch === selectedBranch)
-              .totalAccounts,
-          }))
-      )
+        )
+        .map((filteredItem) => ({
+          year: filteredItem.year,
+          value: filteredItem.regions.find(
+            (region) => region.region === selectedRegion
+          ).totalAccounts,
+          branchvalue: filteredItem.regions
+            .find((region) => region.region === selectedRegion)
+            .branches.find((branch) => branch.branch === selectedBranch)
+            .totalAccounts,
+        }))
+    )
     : [];
 
   // Previous Year's Total Accounts opened for the selected region
   const prevYearRegionAccounts = data
     ? [data].flatMap((item) =>
-        [item.previousYearStats]
-          .filter((prevYearItem) =>
-            prevYearItem.regions.some(
-              (region) =>
-                (!selectedRegion || region.region === selectedRegion) &&
-                (!selectedBranch ||
-                  region.branches.some(
-                    (branch) => branch.branch === selectedBranch
-                  ))
-            )
+      [item.previousYearStats]
+        .filter((prevYearItem) =>
+          prevYearItem.regions.some(
+            (region) =>
+              (!selectedRegion || region.region === selectedRegion) &&
+              (!selectedBranch ||
+                region.branches.some(
+                  (branch) => branch.branch === selectedBranch
+                ))
           )
-          .map((filteredItem) => ({
-            year: filteredItem.year,
-            value: filteredItem.regions.find(
-              (region) => region.region === selectedRegion
-            ).totalAccounts,
-            branchvalue: filteredItem.regions
-              .find((region) => region.region === selectedRegion)
-              .branches.find((branch) => branch.branch === selectedBranch)
-              .totalAccounts,
-          }))
-      )
+        )
+        .map((filteredItem) => ({
+          year: filteredItem.year,
+          value: filteredItem.regions.find(
+            (region) => region.region === selectedRegion
+          ).totalAccounts,
+          branchvalue: filteredItem.regions
+            .find((region) => region.region === selectedRegion)
+            .branches.find((branch) => branch.branch === selectedBranch)
+            .totalAccounts,
+        }))
+    )
     : [];
 
   // Previous Months Total Accounts opened for the selected region
   const prevMonthRegionAccounts = data
     ? [data].flatMap((item) =>
-        [item.previousMonthStats]
-          .filter((thisMonthItem) =>
-            thisMonthItem.regions.some(
-              (region) =>
-                (!selectedRegion || region.region === selectedRegion) &&
-                (!selectedBranch ||
-                  region.branches.some(
-                    (branch) => branch.branch === selectedBranch
-                  ))
-            )
+      [item.previousMonthStats]
+        .filter((thisMonthItem) =>
+          thisMonthItem.regions.some(
+            (region) =>
+              (!selectedRegion || region.region === selectedRegion) &&
+              (!selectedBranch ||
+                region.branches.some(
+                  (branch) => branch.branch === selectedBranch
+                ))
           )
-          .map((filteredItem) => ({
-            month: filteredItem.month,
-            value: filteredItem.regions.find(
-              (region) => region.region === selectedRegion
-            ).totalAccounts,
-            branchvalue: filteredItem.regions
-              .find((region) => region.region === selectedRegion)
-              .branches.find((branch) => branch.branch === selectedBranch)
-              .totalAccounts,
-          }))
-      )
+        )
+        .map((filteredItem) => ({
+          month: filteredItem.month,
+          value: filteredItem.regions.find(
+            (region) => region.region === selectedRegion
+          ).totalAccounts,
+          branchvalue: filteredItem.regions
+            .find((region) => region.region === selectedRegion)
+            .branches.find((branch) => branch.branch === selectedBranch)
+            .totalAccounts,
+        }))
+    )
     : [];
 
   // Today's Total Accounts opened for selected region
   const todayRegionAccounts = data
     ? [data].flatMap((item) =>
-        [item.todayStats]
-          .filter((todayItem) =>
-            todayItem.regions.some(
-              (region) =>
-                (!selectedRegion || region.region === selectedRegion) &&
-                (!selectedBranch ||
-                  region.branches.some(
-                    (branch) => branch.branch === selectedBranch
-                  ))
-            )
+      [item.todayStats]
+        .filter((todayItem) =>
+          todayItem.regions.some(
+            (region) =>
+              (!selectedRegion || region.region === selectedRegion) &&
+              (!selectedBranch ||
+                region.branches.some(
+                  (branch) => branch.branch === selectedBranch
+                ))
           )
-          .map((filteredItem) => ({
-            month: filteredItem.month,
-            value: filteredItem.regions.find(
-              (region) => region.region === selectedRegion
-            ).totalAccounts,
-            branchvalue: filteredItem.regions
-              .find((region) => region.region === selectedRegion)
-              .branches.find((branch) => branch.branch === selectedBranch)
-              .totalAccounts,
-          }))
-      )
+        )
+        .map((filteredItem) => ({
+          month: filteredItem.month,
+          value: filteredItem.regions.find(
+            (region) => region.region === selectedRegion
+          ).totalAccounts,
+          branchvalue: filteredItem.regions
+            .find((region) => region.region === selectedRegion)
+            .branches.find((branch) => branch.branch === selectedBranch)
+            .totalAccounts,
+        }))
+    )
     : [];
 
   // Previous Day's Total Accounts opened for selected region
   const prevDayRegionAccounts = data
     ? [data].flatMap((item) =>
-        [item.previousDateStats]
-          .filter((todayItem) =>
-            todayItem.regions.some(
-              (region) =>
-                (!selectedRegion || region.region === selectedRegion) &&
-                (!selectedBranch ||
-                  region.branches.some(
-                    (branch) => branch.branch === selectedBranch
-                  ))
-            )
+      [item.previousDateStats]
+        .filter((todayItem) =>
+          todayItem.regions.some(
+            (region) =>
+              (!selectedRegion || region.region === selectedRegion) &&
+              (!selectedBranch ||
+                region.branches.some(
+                  (branch) => branch.branch === selectedBranch
+                ))
           )
-          .map((filteredItem) => ({
-            month: filteredItem.month,
-            value: filteredItem.regions.find(
-              (region) => region.region === selectedRegion
-            ).totalAccounts,
-            branchvalue: filteredItem.regions
-              .find((region) => region.region === selectedRegion)
-              .branches.find((branch) => branch.branch === selectedBranch)
-              .totalAccounts,
-          }))
-      )
+        )
+        .map((filteredItem) => ({
+          month: filteredItem.month,
+          value: filteredItem.regions.find(
+            (region) => region.region === selectedRegion
+          ).totalAccounts,
+          branchvalue: filteredItem.regions
+            .find((region) => region.region === selectedRegion)
+            .branches.find((branch) => branch.branch === selectedBranch)
+            .totalAccounts,
+        }))
+    )
     : [];
 
   // Prepare data for Region Line Chart
   const filteredData = data
     ? [data].flatMap((item) =>
-        item.monthlyData
-          .filter((monthlyItem) =>
-            monthlyItem.regions.some(
-              (region) =>
-                (!selectedRegion || region.region === selectedRegion) &&
-                (!selectedBranch ||
-                  region.branches.some(
-                    (branch) => branch.branch === selectedBranch
-                  ))
-            )
+      item.monthlyData
+        .filter((monthlyItem) =>
+          monthlyItem.regions.some(
+            (region) =>
+              (!selectedRegion || region.region === selectedRegion) &&
+              (!selectedBranch ||
+                region.branches.some(
+                  (branch) => branch.branch === selectedBranch
+                ))
           )
-          .map((filteredItem) => ({
-            month: filteredItem.month,
-            region: filteredItem.regions.find(
-              (region) => region.region === selectedRegion
-            ), // Find the specific region
-            value: filteredItem.regions.find(
-              (region) => region.region === selectedRegion
-            ).totalAccounts, // Assuming totalAccounts is what you want to display
-            branchvalue: filteredItem.regions
-              .find((region) => region.region === selectedRegion)
-              .branches.find((branch) => branch.branch === selectedBranch)
-              .totalAccounts,
-          }))
-      )
+        )
+        .map((filteredItem) => ({
+          month: filteredItem.month,
+          region: filteredItem.regions.find(
+            (region) => region.region === selectedRegion
+          ), // Find the specific region
+          value: filteredItem.regions.find(
+            (region) => region.region === selectedRegion
+          ).totalAccounts, // Assuming totalAccounts is what you want to display
+          branchvalue: filteredItem.regions
+            .find((region) => region.region === selectedRegion)
+            .branches.find((branch) => branch.branch === selectedBranch)
+            .totalAccounts,
+        }))
+    )
     : [];
 
   // Region Line CHart
@@ -650,11 +650,11 @@ const AccountsOpened = () => {
   // Prepare data for General Line Chart
   const filteredDataa = data
     ? [data].flatMap((item) =>
-        item.monthlyData.map((monthlyItem) => ({
-          x: monthlyItem.month,
-          y: monthlyItem.totalAccounts,
-        }))
-      )
+      item.monthlyData.map((monthlyItem) => ({
+        x: monthlyItem.month,
+        y: monthlyItem.totalAccounts,
+      }))
+    )
     : [];
 
   // General Line Chart Data
@@ -669,15 +669,15 @@ const AccountsOpened = () => {
   // Gender for the selected region
   const genderRegionAccounts = data
     ? [data].flatMap((item) =>
-        item.regions
-          .filter((regionItem) => regionItem.region === selectedRegion)
-          .flatMap(({ gender }) =>
-            Object.entries(gender).map(([key, value]) => ({
-              gender: key,
-              value,
-            }))
-          )
-      )
+      item.regions
+        .filter((regionItem) => regionItem.region === selectedRegion)
+        .flatMap(({ gender }) =>
+          Object.entries(gender).map(([key, value]) => ({
+            gender: key,
+            value,
+          }))
+        )
+    )
     : [];
 
   // Prepare data for Region gender pie chart
@@ -692,17 +692,17 @@ const AccountsOpened = () => {
   // Gender for the selected branch
   const genderBranchAccounts = data
     ? data.regions
-        .filter((regionItem) => regionItem.region === selectedRegion)
-        .flatMap((region) =>
-          region.branches
-            .filter((branchItem) => branchItem.branch === selectedBranch)
-            .flatMap(({ gender }) =>
-              Object.entries(gender).map(([key, value]) => ({
-                gender: key,
-                value,
-              }))
-            )
-        )
+      .filter((regionItem) => regionItem.region === selectedRegion)
+      .flatMap((region) =>
+        region.branches
+          .filter((branchItem) => branchItem.branch === selectedBranch)
+          .flatMap(({ gender }) =>
+            Object.entries(gender).map(([key, value]) => ({
+              gender: key,
+              value,
+            }))
+          )
+      )
     : [];
 
   // Prepare data for Branch gender pie chart
@@ -718,106 +718,106 @@ const AccountsOpened = () => {
   // Types of Accounts opened for the selected region
   const regionTypesOfAccounts = data
     ? data.regions
-        .filter((regionItem) => regionItem.region === selectedRegion)
-        .flatMap(({ typesofAccounts }) =>
-          typesofAccounts
-            ? typesofAccounts.map((account) => ({ ...account }))
-            : []
-        )
+      .filter((regionItem) => regionItem.region === selectedRegion)
+      .flatMap(({ typesofAccounts }) =>
+        typesofAccounts
+          ? typesofAccounts.map((account) => ({ ...account }))
+          : []
+      )
     : [];
 
   // Types of Accounts opened for the selected branch
   const branchTypesOfAccounts = data
     ? data.regions
-        .filter((regionItem) => regionItem.region === selectedRegion)
-        .flatMap((region) =>
-          region.branches
-            .filter((branchItem) => branchItem.branch === selectedBranch)
-            .flatMap(({ typesofAccounts }) =>
-              typesofAccounts.map((account) => ({ ...account }))
-            )
-        )
+      .filter((regionItem) => regionItem.region === selectedRegion)
+      .flatMap((region) =>
+        region.branches
+          .filter((branchItem) => branchItem.branch === selectedBranch)
+          .flatMap(({ typesofAccounts }) =>
+            typesofAccounts.map((account) => ({ ...account }))
+          )
+      )
     : [];
 
   // Branches and Accounts opened for the selected region
   const regionBranchAccounts = data
     ? data.regions
-        .filter((regionItem) => regionItem.region === selectedRegion)
-        .flatMap(({ branches }) => branches.map((branch) => ({ ...branch })))
+      .filter((regionItem) => regionItem.region === selectedRegion)
+      .flatMap(({ branches }) => branches.map((branch) => ({ ...branch })))
     : [];
 
   // BRANCH LOGIC SECTION //
   // Total Accounts opened for the selected Branch
   const branchAccounts = data
     ? data.regions
-        .filter((regionItem) => regionItem.region === selectedRegion)
-        .flatMap((region) =>
-          region.branches
-            .filter((branchItem) => branchItem.branch === selectedBranch)
-            .map(({ branch, totalAccounts }) => ({ branch, totalAccounts }))
-        )
+      .filter((regionItem) => regionItem.region === selectedRegion)
+      .flatMap((region) =>
+        region.branches
+          .filter((branchItem) => branchItem.branch === selectedBranch)
+          .map(({ branch, totalAccounts }) => ({ branch, totalAccounts }))
+      )
     : [];
 
 
   // Today's Total Accounts opened for selected Branch
   const todayBranchAccounts = data
     ? [data].flatMap((item) =>
-        [item.todayStats]
-          .filter((todayItem) =>
-            todayItem.regions.some(
-              (region) =>
-                (!selectedRegion || region.region === selectedRegion) &&
-                (!selectedBranch ||
-                  region.branches.some(
-                    (branch) => branch.branch === selectedBranch
-                  ))
-            )
+      [item.todayStats]
+        .filter((todayItem) =>
+          todayItem.regions.some(
+            (region) =>
+              (!selectedRegion || region.region === selectedRegion) &&
+              (!selectedBranch ||
+                region.branches.some(
+                  (branch) => branch.branch === selectedBranch
+                ))
           )
-          .map((filteredItem) => ({
-            month: filteredItem.month,
-            value: filteredItem.regions.find(
-              (region) => region.region === selectedRegion
-            ).totalAccounts,
-            branchvalue: filteredItem.regions
-              .find((region) => region.region === selectedRegion)
-              .branches.find((branch) => branch.branch === selectedBranch)
-              .totalAccounts,
-          }))
-      )
+        )
+        .map((filteredItem) => ({
+          month: filteredItem.month,
+          value: filteredItem.regions.find(
+            (region) => region.region === selectedRegion
+          ).totalAccounts,
+          branchvalue: filteredItem.regions
+            .find((region) => region.region === selectedRegion)
+            .branches.find((branch) => branch.branch === selectedBranch)
+            .totalAccounts,
+        }))
+    )
     : [];
 
   // Previous Day's Total Accounts opened for selected Branch
   const prevDayBranchAccounts = data
     ? [data].flatMap((item) =>
-        [item.previousDateStats]
-          .filter((todayItem) =>
-            todayItem.regions.some(
-              (region) =>
-                (!selectedRegion || region.region === selectedRegion) &&
-                (!selectedBranch ||
-                  region.branches.some(
-                    (branch) => branch.branch === selectedBranch
-                  ))
-            )
+      [item.previousDateStats]
+        .filter((todayItem) =>
+          todayItem.regions.some(
+            (region) =>
+              (!selectedRegion || region.region === selectedRegion) &&
+              (!selectedBranch ||
+                region.branches.some(
+                  (branch) => branch.branch === selectedBranch
+                ))
           )
-          .map((filteredItem) => ({
-            month: filteredItem.month,
-            value: filteredItem.regions.find(
-              (region) => region.region === selectedRegion
-            ).totalAccounts,
-            branchvalue: filteredItem.regions
-              .find((region) => region.region === selectedRegion)
-              .branches.find((branch) => branch.branch === selectedBranch)
-              .totalAccounts,
-          }))
-      )
+        )
+        .map((filteredItem) => ({
+          month: filteredItem.month,
+          value: filteredItem.regions.find(
+            (region) => region.region === selectedRegion
+          ).totalAccounts,
+          branchvalue: filteredItem.regions
+            .find((region) => region.region === selectedRegion)
+            .branches.find((branch) => branch.branch === selectedBranch)
+            .totalAccounts,
+        }))
+    )
     : [];
 
   return (
     <Box m="0.4rem 2.5rem">
       <FlexBetween>
         <Header
-          title={`ACCOUNTS OPENED BETWEEN 01/02/2024 AND ${data?.todayStats?.date}`}
+          title={`ACCOUNTS OPENED BETWEEN 02/01/2024 AND ${data?.todayStats?.date}`}
           subtitle="General Statistics"
         />
       </FlexBetween>
@@ -868,7 +868,7 @@ const AccountsOpened = () => {
                     color:
                       data?.thisYearStats?.totalAccounts -
                         data?.previousYearStats?.totalAccounts >=
-                      0
+                        0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
@@ -877,7 +877,7 @@ const AccountsOpened = () => {
                     ((data?.thisYearStats?.totalAccounts -
                       data?.previousYearStats?.totalAccounts) /
                       data?.previousYearStats?.totalAccounts) *
-                      100}
+                    100}
                   %{data?.previousYearStats?.totalAccounts !== 0 && "%"}
                 </span>
               }
@@ -893,7 +893,7 @@ const AccountsOpened = () => {
                     color:
                       data?.thisYearStats?.totalAccounts -
                         data?.previousYearStats?.totalAccounts >=
-                      0
+                        0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
@@ -906,7 +906,7 @@ const AccountsOpened = () => {
               iconn={
                 data?.thisYearStats?.totalAccounts -
                   data?.previousYearStats?.totalAccounts >=
-                0 ? (
+                  0 ? (
                   <ArrowDropUpIcon
                     style={{
                       color: theme.palette.secondary[999],
@@ -941,17 +941,17 @@ const AccountsOpened = () => {
                     color:
                       data?.thisMonthStats?.totalAccounts -
                         data?.previousMonthStats?.totalAccounts >=
-                      0
+                        0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
                 >
-                  {data?.previousMonthStats?.totalAccounts !== 0 &&
-                    ((data?.thisMonthStats?.totalAccounts -
-                      data?.previousMonthStats?.totalAccounts) /
-                      data?.previousMonthStats?.totalAccounts) *
-                      100}
-                  %{data?.previousMonthStats?.totalAccounts !== 0 && "%"}
+                  {
+                    data?.previousMonthStats?.totalAccounts !== 0 &&
+                    ((data?.thisMonthStats?.totalAccounts - data?.previousMonthStats?.totalAccounts) / data?.previousMonthStats?.totalAccounts * 100).toFixed(0)
+                  }
+                  %
+
                 </span>
               }
               description="This Month"
@@ -966,7 +966,7 @@ const AccountsOpened = () => {
                     color:
                       data?.thisMonthStats?.totalAccounts -
                         data?.previousMonthStats?.totalAccounts >=
-                      0
+                        0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
@@ -979,7 +979,7 @@ const AccountsOpened = () => {
               iconn={
                 data?.thisMonthStats?.totalAccounts -
                   data?.previousMonthStats?.totalAccounts >=
-                0 ? (
+                  0 ? (
                   <ArrowDropUpIcon
                     style={{
                       color: theme.palette.secondary[999],
@@ -1005,7 +1005,7 @@ const AccountsOpened = () => {
                     color:
                       data?.todayStats?.totalAccounts -
                         data?.previousDateStats?.totalAccounts >=
-                      0
+                        0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
@@ -1031,7 +1031,7 @@ const AccountsOpened = () => {
                     color:
                       data?.todayStats?.totalAccounts -
                         data?.previousDateStats?.totalAccounts >=
-                      0
+                        0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
@@ -1044,7 +1044,7 @@ const AccountsOpened = () => {
               iconn={
                 data?.todayStats?.totalAccounts -
                   data?.previousDateStats?.totalAccounts >=
-                0 ? (
+                  0 ? (
                   <ArrowDropUpIcon
                     style={{
                       color: theme.palette.secondary[999],
@@ -1300,7 +1300,7 @@ const AccountsOpened = () => {
                     color:
                       thisYearRegionAccounts.map((item) => item.value) -
                         prevYearRegionAccounts.map((item) => item.value) >=
-                      0
+                        0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
@@ -1309,7 +1309,7 @@ const AccountsOpened = () => {
                     ((thisYearRegionAccounts.map((item) => item.value) -
                       prevYearRegionAccounts.map((item) => item.value)) /
                       prevYearRegionAccounts.map((item) => item.value)) *
-                      100}
+                    100}
                   %{data?.previousYearStats?.totalAccounts !== 0 && "%"}
                 </span>
               }
@@ -1328,7 +1328,7 @@ const AccountsOpened = () => {
                     color:
                       thisYearRegionAccounts.map((item) => item.value) -
                         prevYearRegionAccounts.map((item) => item.value) >=
-                      0
+                        0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
@@ -1341,7 +1341,7 @@ const AccountsOpened = () => {
               iconn={
                 thisYearRegionAccounts.map((item) => item.value) -
                   prevYearRegionAccounts.map((item) => item.value) >=
-                0 ? (
+                  0 ? (
                   <ArrowDropUpIcon
                     style={{
                       color: theme.palette.secondary[999],
@@ -1376,17 +1376,22 @@ const AccountsOpened = () => {
                     color:
                       thisMonthRegionAccounts.map((item) => item.value) -
                         prevMonthRegionAccounts.map((item) => item.value) >=
-                      0
+                        0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
                 >
-                  {data?.previousMonthStats?.totalAccounts !== 0 &&
-                    ((thisMonthRegionAccounts.map((item) => item.value) -
-                      prevMonthRegionAccounts.map((item) => item.value)) /
-                      prevMonthRegionAccounts.map((item) => item.value)) *
-                      100}
-                  %{data?.previousMonthStats?.totalAccounts !== 0 && "%"}
+                  {
+                    data?.previousMonthStats?.totalAccounts !== 0 &&
+                    (
+                      ((thisMonthRegionAccounts.reduce((sum, item) => sum + item.value, 0) -
+                        prevMonthRegionAccounts.reduce((sum, item) => sum + item.value, 0)) /
+                        prevMonthRegionAccounts.reduce((sum, item) => sum + item.value, 0)) *
+                      100
+                    ).toFixed(0)
+                  }
+                  %
+
                 </span>
               }
               description="This Month"
@@ -1404,7 +1409,7 @@ const AccountsOpened = () => {
                     color:
                       thisMonthRegionAccounts.map((item) => item.value) -
                         prevMonthRegionAccounts.map((item) => item.value) >=
-                      0
+                        0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
@@ -1417,7 +1422,7 @@ const AccountsOpened = () => {
               iconn={
                 thisMonthRegionAccounts.map((item) => item.value) -
                   prevMonthRegionAccounts.map((item) => item.value) >=
-                0 ? (
+                  0 ? (
                   <ArrowDropUpIcon
                     style={{
                       color: theme.palette.secondary[999],
@@ -1443,7 +1448,7 @@ const AccountsOpened = () => {
                     color:
                       todayRegionAccounts.map((item) => item.value) -
                         prevDayRegionAccounts.map((item) => item.value) >=
-                      0
+                        0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
@@ -1472,7 +1477,7 @@ const AccountsOpened = () => {
                     color:
                       todayRegionAccounts.map((item) => item.value) -
                         prevDayRegionAccounts.map((item) => item.value) >=
-                      0
+                        0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
@@ -1485,7 +1490,7 @@ const AccountsOpened = () => {
               iconn={
                 todayRegionAccounts.map((item) => item.value) -
                   prevDayRegionAccounts.map((item) => item.value) >=
-                0 ? (
+                  0 ? (
                   <ArrowDropUpIcon
                     style={{
                       color: theme.palette.secondary[999],
@@ -1653,7 +1658,7 @@ const AccountsOpened = () => {
             xScale={{ type: "point" }}
             yScale={{
               type: "linear",
-              min: "auto",
+              min: 0,
               max: "auto",
               stacked: false,
               reverse: false,
@@ -1828,7 +1833,7 @@ const AccountsOpened = () => {
                         prevYearRegionAccounts.map(
                           (item) => item.branchvalue
                         ) >=
-                      0
+                        0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
@@ -1837,7 +1842,7 @@ const AccountsOpened = () => {
                     ((thisYearRegionAccounts.map((item) => item.branchvalue) -
                       prevYearRegionAccounts.map((item) => item.branchvalue)) /
                       prevYearRegionAccounts.map((item) => item.branchvalue)) *
-                      100}
+                    100}
                   %{data?.previousYearStats?.totalAccounts !== 0 && "%"}
                 </span>
               }
@@ -1855,7 +1860,7 @@ const AccountsOpened = () => {
                         prevYearRegionAccounts.map(
                           (item) => item.branchvalue
                         ) >=
-                      0
+                        0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
@@ -1868,7 +1873,7 @@ const AccountsOpened = () => {
               iconn={
                 thisYearRegionAccounts.map((item) => item.branchvalue) -
                   prevYearRegionAccounts.map((item) => item.branchvalue) >=
-                0 ? (
+                  0 ? (
                   <ArrowDropUpIcon
                     style={{
                       color: theme.palette.secondary[999],
@@ -1905,17 +1910,22 @@ const AccountsOpened = () => {
                         prevMonthRegionAccounts.map(
                           (item) => item.branchvalue
                         ) >=
-                      0
+                        0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
                 >
-                  {data?.previousMonthStats?.totalAccounts !== 0 &&
-                    ((thisMonthRegionAccounts.map((item) => item.branchvalue) -
-                      prevMonthRegionAccounts.map((item) => item.branchvalue)) /
-                      prevMonthRegionAccounts.map((item) => item.branchvalue)) *
-                      100}
-                  %{data?.previousMonthStats?.totalAccounts !== 0 && "%"}
+                  {
+                    data?.previousMonthStats?.totalAccounts !== 0 &&
+                    (
+                      ((thisMonthRegionAccounts.reduce((sum, item) => sum + item.branchvalue, 0) -
+                        prevMonthRegionAccounts.reduce((sum, item) => sum + item.branchvalue, 0)) /
+                        prevMonthRegionAccounts.reduce((sum, item) => sum + item.branchvalue, 0)) *
+                      100
+                    ).toFixed(0)
+                  }
+                  %
+
                 </span>
               }
               description="This Month"
@@ -1932,7 +1942,7 @@ const AccountsOpened = () => {
                         prevMonthRegionAccounts.map(
                           (item) => item.branchvalue
                         ) >=
-                      0
+                        0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
@@ -1945,7 +1955,7 @@ const AccountsOpened = () => {
               iconn={
                 thisMonthRegionAccounts.map((item) => item.branchvalue) -
                   prevMonthRegionAccounts.map((item) => item.branchvalue) >=
-                0 ? (
+                  0 ? (
                   <ArrowDropUpIcon
                     style={{
                       color: theme.palette.secondary[999],
@@ -1971,7 +1981,7 @@ const AccountsOpened = () => {
                     color:
                       todayBranchAccounts.map((item) => item.branchvalue) -
                         prevDayBranchAccounts.map((item) => item.branchvalue) >=
-                      0
+                        0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
@@ -2002,7 +2012,7 @@ const AccountsOpened = () => {
                     color:
                       todayRegionAccounts.map((item) => item.branchvalue) -
                         prevDayRegionAccounts.map((item) => item.branchvalue) >=
-                      0
+                        0
                         ? theme.palette.secondary[999]
                         : theme.palette.secondary[888],
                   }}
@@ -2015,7 +2025,7 @@ const AccountsOpened = () => {
               iconn={
                 todayRegionAccounts.map((item) => item.branchvalue) -
                   prevDayRegionAccounts.map((item) => item.branchvalue) >=
-                0 ? (
+                  0 ? (
                   <ArrowDropUpIcon
                     style={{
                       color: theme.palette.secondary[999],
@@ -2183,7 +2193,7 @@ const AccountsOpened = () => {
             xScale={{ type: "point" }}
             yScale={{
               type: "linear",
-              min: "auto",
+              min: 0,
               max: "auto",
               stacked: false,
               reverse: false,
@@ -2207,7 +2217,7 @@ const AccountsOpened = () => {
             }}
             axisLeft={{
               orient: "left",
-              tickValues: 5,
+              tickValues: 6,
               tickSize: 5,
               tickPadding: 1,
               tickRotation: 0,
